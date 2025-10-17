@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, ScrollView, useColorScheme } from 'react-native';
+import { View, Text, ScrollView, useColorScheme, ActivityIndicator } from 'react-native';
 import { createStyles, lightColors, darkColors } from './WeeklyForecastScreen.styles';
+import { geocode, fetchDaily, Daily } from '../services/weather';
 
 type DayItem = {
   label: string; // 今日/火/水...
@@ -32,6 +33,31 @@ export default function WeeklyForecastScreen({ activeTab = 'weekly', onChangeTab
   const isDark = useColorScheme() === 'dark';
   const colors = isDark ? darkColors : lightColors;
   const styles = createStyles();
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const [days, setDays] = React.useState<Daily[] | null>(null);
+
+  React.useEffect(() => {
+    let mounted = true;
+    const run = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const g = await geocode(location);
+        const d = await fetchDaily(g.latitude, g.longitude);
+        if (!mounted) return;
+        setDays(d);
+      } catch (e) {
+        if (!mounted) return;
+        setError(e instanceof Error ? e.message : '取得に失敗しました');
+        setDays(null);
+      } finally {
+        mounted && setLoading(false);
+      }
+    };
+    run();
+    return () => { mounted = false; };
+  }, [location]);
 
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}> 
@@ -46,7 +72,17 @@ export default function WeeklyForecastScreen({ activeTab = 'weekly', onChangeTab
       {/* Main list */}
       <ScrollView style={styles.main}>
         <View style={[styles.divider, { backgroundColor: colors.divider }]} />
-        {SAMPLE.map((d, idx) => (
+        {loading && (
+          <View style={{ padding: 16, alignItems: 'center' }}>
+            <ActivityIndicator />
+          </View>
+        )}
+        {error && !loading && (
+          <View style={{ padding: 16 }}>
+            <Text style={{ color: '#ef4444' }}>{error}</Text>
+          </View>
+        )}
+        {!loading && !error && days && days.map((d, idx) => (
           <View key={idx}>
             <View
               style={[
@@ -58,21 +94,19 @@ export default function WeeklyForecastScreen({ activeTab = 'weekly', onChangeTab
                 <View
                   style={[
                     styles.dayBadge,
-                    d.highlight ? styles.dayBadgePrimaryBg : styles.dayBadgeNeutralBg,
+                    idx === 0 ? styles.dayBadgePrimaryBg : styles.dayBadgeNeutralBg,
                   ]}
                 >
-                  <Text style={d.highlight ? styles.dayTextPrimary : styles.dayTextNeutral}>{d.label}</Text>
-                  <Text style={d.highlight ? styles.dateTextPrimary : styles.dateTextNeutral}>{d.date}</Text>
+                  <Text style={idx === 0 ? styles.dayTextPrimary : styles.dayTextNeutral}>{idx === 0 ? '今日' : new Date(d.dateIso).toLocaleDateString('ja-JP', { weekday: 'short' })}</Text>
+                  <Text style={idx === 0 ? styles.dateTextPrimary : styles.dateTextNeutral}>{new Date(d.dateIso).toLocaleDateString('ja-JP', { month: 'numeric', day: 'numeric' })}</Text>
                 </View>
-                <Text style={[styles.icon, { color: d.icon === '☀️' ? '#f59e0b' : d.icon === '🌧️' ? '#22d3ee' : colors.textMuted }]}>
-                  {d.icon}
-                </Text>
-                <Text style={[styles.weatherLabel, { color: colors.textPrimary }]}>{d.labelText}</Text>
+                <Text style={[styles.icon, { color: colors.textMuted }]}>⛅️</Text>
+                <Text style={[styles.weatherLabel, { color: colors.textPrimary }]}>コード {d.weatherCode}</Text>
               </View>
               <View style={styles.rowRight}>
                 <View style={styles.temps}>
-                  <Text style={[styles.tempHigh, { color: colors.textPrimary }]}>{d.high}</Text>
-                  <Text style={[styles.tempLow, { color: colors.textMuted }]}>{d.low}</Text>
+                  <Text style={[styles.tempHigh, { color: colors.textPrimary }]}>{Math.round(d.tMaxC)}°</Text>
+                  <Text style={[styles.tempLow, { color: colors.textMuted }]}>{Math.round(d.tMinC)}°</Text>
                 </View>
                 <Text style={[styles.chevron, { color: colors.textMuted }]}>{'›'}</Text>
               </View>

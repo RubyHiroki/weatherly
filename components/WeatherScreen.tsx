@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, useColorScheme } from 'react-native';
+import { View, Text, useColorScheme, ActivityIndicator } from 'react-native';
 import { createStyles, lightColors, darkColors } from './WeatherScreen.styles';
+import { geocode, fetchCurrent } from '../services/weather';
 
 type Props = {
   activeTab?: 'current' | 'weekly' | 'settings';
@@ -13,6 +14,37 @@ export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChange
   const colors = isDark ? darkColors : lightColors;
 
   const styles = createStyles();
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const [tempC, setTempC] = React.useState<number | null>(null);
+  const [wCode, setWCode] = React.useState<number | null>(null);
+  const [windMs, setWindMs] = React.useState<number | null>(null);
+
+  React.useEffect(() => {
+    let mounted = true;
+    const run = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const g = await geocode(location);
+        const cur = await fetchCurrent(g.latitude, g.longitude);
+        if (!mounted) return;
+        setTempC(cur.temperatureC);
+        setWCode(cur.weatherCode);
+        setWindMs(cur.windSpeedMs);
+      } catch (e) {
+        if (!mounted) return;
+        setError(e instanceof Error ? e.message : '取得に失敗しました');
+        setTempC(null);
+        setWCode(null);
+        setWindMs(null);
+      } finally {
+        mounted && setLoading(false);
+      }
+    };
+    run();
+    return () => { mounted = false; };
+  }, [location]);
 
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}> 
@@ -29,17 +61,30 @@ export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChange
       <View style={styles.main}>
         <View style={styles.centerBlock}>
           <Text style={[styles.city, { color: colors.textPrimary }]}>{location}</Text>
-          <View style={styles.iconRow}>
-            <Text style={styles.sunIcon}>☀️</Text>
-            <Text style={[styles.temp, { color: colors.textPrimary }]}>24°</Text>
-          </View>
+          {loading ? (
+            <View style={{ marginTop: 16 }}>
+              <ActivityIndicator />
+            </View>
+          ) : error ? (
+            <Text style={{ color: '#ef4444', marginTop: 16 }}>{error}</Text>
+          ) : (
+            <View style={styles.iconRow}>
+              <Text style={styles.sunIcon}>☀️</Text>
+              <Text style={[styles.temp, { color: colors.textPrimary }]}>
+                {tempC !== null ? `${Math.round(tempC)}°` : '--'}
+              </Text>
+            </View>
+          )}
         </View>
 
-        <Text style={[styles.desc, { color: colors.textPrimary }]}>晴れ</Text>
-        <View style={styles.details}>
-          <Text style={[styles.detailText, { color: colors.textSecondary }]}>降水確率 0%</Text>
-          <Text style={[styles.detailText, { color: colors.textSecondary }]}>最高: 28° / 最低: 20°</Text>
-        </View>
+        {!loading && !error && (
+          <View>
+            <Text style={[styles.desc, { color: colors.textPrimary }]}>現在の天気コード: {wCode ?? '--'}</Text>
+            <View style={styles.details}>
+              <Text style={[styles.detailText, { color: colors.textSecondary }]}>風速: {windMs?.toFixed(1) ?? '--'} m/s</Text>
+            </View>
+          </View>
+        )}
       </View>
 
       <View
