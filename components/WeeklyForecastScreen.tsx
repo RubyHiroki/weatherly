@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, ScrollView, useColorScheme, ActivityIndicator } from 'react-native';
 import { createStyles, lightColors, darkColors } from './WeeklyForecastScreen.styles';
 import { geocode, fetchDaily, Daily } from '../services/weather';
+import { weatherCodeToJa } from '../services/weatherCodes';
+import WeatherIcon from './WeatherIcon';
 
 type DayItem = {
   label: string; // 今日/火/水...
@@ -100,8 +102,10 @@ export default function WeeklyForecastScreen({ activeTab = 'weekly', onChangeTab
                   <Text style={idx === 0 ? styles.dayTextPrimary : styles.dayTextNeutral}>{idx === 0 ? '今日' : new Date(d.dateIso).toLocaleDateString('ja-JP', { weekday: 'short' })}</Text>
                   <Text style={idx === 0 ? styles.dateTextPrimary : styles.dateTextNeutral}>{new Date(d.dateIso).toLocaleDateString('ja-JP', { month: 'numeric', day: 'numeric' })}</Text>
                 </View>
-                <Text style={[styles.icon, { color: colors.textMuted }]}>⛅️</Text>
-                <Text style={[styles.weatherLabel, { color: colors.textPrimary }]}>コード {d.weatherCode}</Text>
+                <View style={{ marginRight: 12 }}>
+                  <WeatherIcon code={d.weatherCode} size={28} />
+                </View>
+                <Text style={[styles.weatherLabel, { color: colors.textPrimary }]}>{weatherCodeToJa(d.weatherCode)}</Text>
               </View>
               <View style={styles.rowRight}>
                 <View style={styles.temps}>

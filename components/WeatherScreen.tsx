@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, useColorScheme, ActivityIndicator } from 'react-native';
 import { createStyles, lightColors, darkColors } from './WeatherScreen.styles';
 import { geocode, fetchCurrent } from '../services/weather';
+import { weatherCodeToJa } from '../services/weatherCodes';
+import WeatherIcon from './WeatherIcon';
 
 type Props = {
   activeTab?: 'current' | 'weekly' | 'settings';
@@ -69,7 +71,7 @@ export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChange
             <Text style={{ color: '#ef4444', marginTop: 16 }}>{error}</Text>
           ) : (
             <View style={styles.iconRow}>
-              <Text style={styles.sunIcon}>☀️</Text>
+              <WeatherIcon code={wCode} />
               <Text style={[styles.temp, { color: colors.textPrimary }]}>
                 {tempC !== null ? `${Math.round(tempC)}°` : '--'}
               </Text>
@@ -79,7 +81,7 @@ export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChange
 
         {!loading && !error && (
           <View>
-            <Text style={[styles.desc, { color: colors.textPrimary }]}>現在の天気コード: {wCode ?? '--'}</Text>
+            <Text style={[styles.desc, { color: colors.textPrimary }]}>{weatherCodeToJa(wCode)}</Text>
             <View style={styles.details}>
               <Text style={[styles.detailText, { color: colors.textSecondary }]}>風速: {windMs?.toFixed(1) ?? '--'} m/s</Text>
             </View>
