@@ -7,10 +7,9 @@ type Props = {
   onChangeTab?: (tab: 'current' | 'weekly' | 'settings') => void;
 };
 
-export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab }) => {
+export default function SettingsScreen({ activeTab = 'settings', onChangeTab }: Props) {
   const isDark = useColorScheme() === 'dark';
   const colors = isDark ? darkColors : lightColors;
-
   const styles = createStyles();
 
   return (
@@ -18,7 +17,7 @@ export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChange
       <View style={styles.header}>
         <View style={styles.headerRow}>
           <View style={styles.headerIconSpacer} />
-          <Text style={[styles.headerTitle, { color: colors.textPrimary }]} />
+          <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>設定</Text>
           <View style={styles.headerIconButton}>
             <Text style={{ color: colors.textMuted, fontSize: 20 }}>≡</Text>
           </View>
@@ -26,30 +25,10 @@ export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChange
       </View>
 
       <View style={styles.main}>
-        <View style={styles.centerBlock}>
-          <Text style={[styles.city, { color: colors.textPrimary }]}>東京、日本</Text>
-          <View style={styles.iconRow}>
-            <Text style={styles.sunIcon}>☀️</Text>
-            <Text style={[styles.temp, { color: colors.textPrimary }]}>24°</Text>
-          </View>
-        </View>
-
-        <Text style={[styles.desc, { color: colors.textPrimary }]}>晴れ</Text>
-        <View style={styles.details}>
-          <Text style={[styles.detailText, { color: colors.textSecondary }]}>降水確率 0%</Text>
-          <Text style={[styles.detailText, { color: colors.textSecondary }]}>最高: 28° / 最低: 20°</Text>
-        </View>
+        <Text style={[{ fontSize: 16 }, { color: colors.textPrimary }]}>設定画面（プレースホルダー）</Text>
       </View>
 
-      <View
-        style={[
-          styles.footer,
-          {
-            borderTopColor: colors.border,
-            backgroundColor: colors.footerBg,
-          },
-        ]}
-      >
+      <View style={[styles.footer, { borderTopColor: colors.border, backgroundColor: colors.footerBg }]}>
         <View style={styles.nav}>
           <View style={styles.navItem}>
             <Text onPress={() => onChangeTab && onChangeTab('current')} style={[styles.navIcon, { color: activeTab === 'current' ? colors.primary : colors.textMuted }]}>📍</Text>
@@ -67,6 +46,6 @@ export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChange
       </View>
     </View>
   );
-};
+}
 
-export default WeatherScreen;
+
