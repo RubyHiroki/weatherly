@@ -1,0 +1,57 @@
+export type Prefecture = {
+  code: string; // JP-XX
+  name: string; // 都道府県名
+  cities: string[]; // 主要都市（簡略）
+};
+
+export const prefectures: Prefecture[] = [
+  { code: 'JP-01', name: '北海道', cities: ['札幌市', '函館市', '旭川市'] },
+  { code: 'JP-02', name: '青森県', cities: ['青森市', '八戸市', '弘前市'] },
+  { code: 'JP-03', name: '岩手県', cities: ['盛岡市', '一関市'] },
+  { code: 'JP-04', name: '宮城県', cities: ['仙台市', '石巻市'] },
+  { code: 'JP-05', name: '秋田県', cities: ['秋田市'] },
+  { code: 'JP-06', name: '山形県', cities: ['山形市', '鶴岡市'] },
+  { code: 'JP-07', name: '福島県', cities: ['福島市', '郡山市'] },
+  { code: 'JP-08', name: '茨城県', cities: ['水戸市', 'つくば市'] },
+  { code: 'JP-09', name: '栃木県', cities: ['宇都宮市'] },
+  { code: 'JP-10', name: '群馬県', cities: ['前橋市', '高崎市'] },
+  { code: 'JP-11', name: '埼玉県', cities: ['さいたま市', '川越市'] },
+  { code: 'JP-12', name: '千葉県', cities: ['千葉市', '船橋市'] },
+  { code: 'JP-13', name: '東京都', cities: ['千代田区', '新宿区', '渋谷区', '世田谷区'] },
+  { code: 'JP-14', name: '神奈川県', cities: ['横浜市', '川崎市', '相模原市'] },
+  { code: 'JP-15', name: '新潟県', cities: ['新潟市'] },
+  { code: 'JP-16', name: '富山県', cities: ['富山市'] },
+  { code: 'JP-17', name: '石川県', cities: ['金沢市'] },
+  { code: 'JP-18', name: '福井県', cities: ['福井市'] },
+  { code: 'JP-19', name: '山梨県', cities: ['甲府市'] },
+  { code: 'JP-20', name: '長野県', cities: ['長野市', '松本市'] },
+  { code: 'JP-21', name: '岐阜県', cities: ['岐阜市'] },
+  { code: 'JP-22', name: '静岡県', cities: ['静岡市', '浜松市'] },
+  { code: 'JP-23', name: '愛知県', cities: ['名古屋市', '豊田市'] },
+  { code: 'JP-24', name: '三重県', cities: ['津市'] },
+  { code: 'JP-25', name: '滋賀県', cities: ['大津市'] },
+  { code: 'JP-26', name: '京都府', cities: ['京都市', '宇治市'] },
+  { code: 'JP-27', name: '大阪府', cities: ['大阪市', '堺市'] },
+  { code: 'JP-28', name: '兵庫県', cities: ['神戸市', '姫路市'] },
+  { code: 'JP-29', name: '奈良県', cities: ['奈良市'] },
+  { code: 'JP-30', name: '和歌山県', cities: ['和歌山市'] },
+  { code: 'JP-31', name: '鳥取県', cities: ['鳥取市'] },
+  { code: 'JP-32', name: '島根県', cities: ['松江市'] },
+  { code: 'JP-33', name: '岡山県', cities: ['岡山市', '倉敷市'] },
+  { code: 'JP-34', name: '広島県', cities: ['広島市', '福山市'] },
+  { code: 'JP-35', name: '山口県', cities: ['山口市', '下関市'] },
+  { code: 'JP-36', name: '徳島県', cities: ['徳島市'] },
+  { code: 'JP-37', name: '香川県', cities: ['高松市'] },
+  { code: 'JP-38', name: '愛媛県', cities: ['松山市'] },
+  { code: 'JP-39', name: '高知県', cities: ['高知市'] },
+  { code: 'JP-40', name: '福岡県', cities: ['福岡市', '北九州市'] },
+  { code: 'JP-41', name: '佐賀県', cities: ['佐賀市'] },
+  { code: 'JP-42', name: '長崎県', cities: ['長崎市', '佐世保市'] },
+  { code: 'JP-43', name: '熊本県', cities: ['熊本市'] },
+  { code: 'JP-44', name: '大分県', cities: ['大分市'] },
+  { code: 'JP-45', name: '宮崎県', cities: ['宮崎市'] },
+  { code: 'JP-46', name: '鹿児島県', cities: ['鹿児島市'] },
+  { code: 'JP-47', name: '沖縄県', cities: ['那覇市'] },
+];
+
+

@@ -5,12 +5,13 @@ import SettingsScreen from './components/SettingsScreen';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'current' | 'weekly' | 'settings'>('weekly');
+  const [location, setLocation] = useState<string>('東京, 日本');
 
   if (activeTab === 'current') {
-    return <WeatherScreen activeTab={activeTab} onChangeTab={setActiveTab} />;
+    return <WeatherScreen activeTab={activeTab} onChangeTab={setActiveTab} location={location} />;
   }
   if (activeTab === 'settings') {
-    return <SettingsScreen activeTab={activeTab} onChangeTab={setActiveTab} />;
+    return <SettingsScreen activeTab={activeTab} onChangeTab={setActiveTab} location={location} onSaveLocation={setLocation} />;
   }
-  return <WeeklyForecastScreen activeTab={activeTab} onChangeTab={setActiveTab} />;
+  return <WeeklyForecastScreen activeTab={activeTab} onChangeTab={setActiveTab} location={location} />;
 }

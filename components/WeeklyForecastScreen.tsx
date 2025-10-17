@@ -25,9 +25,10 @@ const SAMPLE: DayItem[] = [
 type Props = {
   activeTab?: 'current' | 'weekly' | 'settings';
   onChangeTab?: (tab: 'current' | 'weekly' | 'settings') => void;
+  location?: string;
 };
 
-export default function WeeklyForecastScreen({ activeTab = 'weekly', onChangeTab }: Props) {
+export default function WeeklyForecastScreen({ activeTab = 'weekly', onChangeTab, location = '東京、日本' }: Props) {
   const isDark = useColorScheme() === 'dark';
   const colors = isDark ? darkColors : lightColors;
   const styles = createStyles();

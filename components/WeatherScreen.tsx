@@ -5,9 +5,10 @@ import { createStyles, lightColors, darkColors } from './WeatherScreen.styles';
 type Props = {
   activeTab?: 'current' | 'weekly' | 'settings';
   onChangeTab?: (tab: 'current' | 'weekly' | 'settings') => void;
+  location?: string;
 };
 
-export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab }) => {
+export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab, location = '東京、日本' }) => {
   const isDark = useColorScheme() === 'dark';
   const colors = isDark ? darkColors : lightColors;
 
@@ -27,7 +28,7 @@ export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChange
 
       <View style={styles.main}>
         <View style={styles.centerBlock}>
-          <Text style={[styles.city, { color: colors.textPrimary }]}>東京、日本</Text>
+          <Text style={[styles.city, { color: colors.textPrimary }]}>{location}</Text>
           <View style={styles.iconRow}>
             <Text style={styles.sunIcon}>☀️</Text>
             <Text style={[styles.temp, { color: colors.textPrimary }]}>24°</Text>
