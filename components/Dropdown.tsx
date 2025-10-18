@@ -18,15 +18,16 @@ export default function Dropdown({ label, value, placeholder = '選択してく�
   const rotateAnim = React.useRef(new Animated.Value(0)).current;
 
   const colors = {
-    bg: isDark ? '#1a1f2e' : '#ffffff',
-    text: isDark ? '#ffffff' : '#0f172a',
-    muted: isDark ? '#94a3b8' : '#64748b',
-    border: isDark ? '#334155' : '#e2e8f0',
-    primary: '#197fe6',
+    bg: isDark ? '#1e1e1e' : '#ffffff',
+    text: isDark ? '#ffffff' : '#212121',
+    muted: isDark ? '#b3b3b3' : '#757575',
+    border: isDark ? '#424242' : '#e0e0e0',
+    primary: '#2196f3',
+    primaryDark: '#1976d2',
+    surface: isDark ? '#2c2c2c' : '#f5f5f5',
     overlay: 'rgba(0,0,0,0.5)',
     shadow: isDark ? 'rgba(0,0,0,0.8)' : 'rgba(0,0,0,0.1)',
-    gradientStart: isDark ? '#2a2f3e' : '#f8fafc',
-    gradientEnd: isDark ? '#1a1f2e' : '#ffffff'
+    ripple: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
   };
 
   const handlePressIn = () => {
@@ -65,11 +66,12 @@ export default function Dropdown({ label, value, placeholder = '選択してく�
   return (
     <View>
       <Text style={{ 
-        fontSize: 14, 
+        fontSize: 12, 
         color: colors.muted, 
         marginBottom: 8,
-        fontWeight: '600',
-        letterSpacing: 0.5
+        fontWeight: '500',
+        letterSpacing: 0.5,
+        textTransform: 'uppercase'
       }}>{label}</Text>
       <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
         <Pressable
@@ -80,29 +82,29 @@ export default function Dropdown({ label, value, placeholder = '選択してく�
             backgroundColor: colors.bg,
             borderWidth: 1,
             borderColor: pressed ? colors.primary : colors.border,
-            height: 52,
-            borderRadius: 16,
+            height: 56,
+            borderRadius: 4,
             paddingHorizontal: 16,
             alignItems: 'center',
             flexDirection: 'row',
             justifyContent: 'space-between',
             shadowColor: colors.shadow,
-            shadowOffset: { width: 0, height: 4 },
+            shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.1,
-            shadowRadius: 8,
-            elevation: 4,
+            shadowRadius: 4,
+            elevation: 2,
           })}
         >
           <Text style={{ 
             color: value ? colors.text : colors.muted,
             fontSize: 16,
-            fontWeight: value ? '500' : '400'
+            fontWeight: value ? '400' : '400'
           }}>
             {value || placeholder}
           </Text>
           <Animated.Text style={{ 
-            color: colors.primary, 
-            fontSize: 18,
+            color: colors.muted, 
+            fontSize: 20,
             transform: [{ rotate: rotateInterpolate }]
           }}>▼</Animated.Text>
         </Pressable>
@@ -113,22 +115,22 @@ export default function Dropdown({ label, value, placeholder = '選択してく�
           <View style={{ marginTop: '20%', marginHorizontal: 20 }}>
             <Pressable onPress={() => {}}>
               <View style={{ 
-                backgroundColor: colors.bg, 
-                borderRadius: 20, 
+                backgroundColor: colors.surface, 
+                borderRadius: 4, 
                 overflow: 'hidden', 
                 borderWidth: 1, 
                 borderColor: colors.border,
                 shadowColor: colors.shadow,
-                shadowOffset: { width: 0, height: 8 },
+                shadowOffset: { width: 0, height: 4 },
                 shadowOpacity: 0.2,
-                shadowRadius: 16,
-                elevation: 8,
+                shadowRadius: 8,
+                elevation: 4,
               }}>
                 <View style={{ 
                   padding: 16, 
                   borderBottomWidth: 1, 
                   borderBottomColor: colors.border,
-                  backgroundColor: colors.gradientStart
+                  backgroundColor: colors.surface
                 }}>
                 </View>
                 <FlatList
@@ -138,28 +140,25 @@ export default function Dropdown({ label, value, placeholder = '選択してく�
                     <Pressable
                       onPress={() => { onChange(item.value); setOpen(false); }}
                       style={({ pressed }) => ({ 
-                        paddingHorizontal: 18, 
+                        paddingHorizontal: 16, 
                         paddingVertical: 16, 
-                        backgroundColor: pressed ? colors.gradientStart : 'transparent',
-                        borderRadius: 8,
-                        marginHorizontal: 8,
-                        marginVertical: 2,
+                        backgroundColor: pressed ? colors.ripple : 'transparent',
                       })}
                     >
                       <Text style={{ 
                         color: colors.text, 
                         fontSize: 16,
-                        fontWeight: '500'
+                        fontWeight: '400'
                       }}>{item.label}</Text>
                     </Pressable>
                   )}
-                  ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: colors.border, marginHorizontal: 18 }} />}
+                  ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: colors.border, marginHorizontal: 16 }} />}
                   style={{ maxHeight: 360 }}
                 />
                 <View style={{ 
                   padding: 16, 
                   alignItems: 'center',
-                  backgroundColor: colors.gradientStart,
+                  backgroundColor: colors.surface,
                   borderTopWidth: 1,
                   borderTopColor: colors.border
                 }}>
