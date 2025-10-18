@@ -1,5 +1,6 @@
 export type GeocodeResult = { latitude: number; longitude: number; name: string };
 export type Current = { temperatureC: number; windSpeedMs: number; weatherCode: number; timeIso: string };
+export type TodayForecast = { tMaxC: number; tMinC: number; precipitationProbability: number };
 export type Daily = { dateIso: string; tMaxC: number; tMinC: number; weatherCode: number };
 
 const GEOCODE = 'https://geocoding-api.open-meteo.com/v1/search';
@@ -73,6 +74,20 @@ export async function fetchCurrent(lat: number, lon: number): Promise<Current> {
     windSpeedMs: Number(cur.wind_speed_10m),
     weatherCode: Number(cur.weather_code),
     timeIso: String(cur.time),
+  };
+}
+
+export async function fetchTodayForecast(lat: number, lon: number): Promise<TodayForecast> {
+  const url = `${FORECAST}?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('今日の予報の取得に失敗しました');
+  const json = await res.json();
+  const days = json?.daily;
+  if (!days) throw new Error('今日の予報データがありません');
+  return {
+    tMaxC: Number(days.temperature_2m_max?.[0] ?? 0),
+    tMinC: Number(days.temperature_2m_min?.[0] ?? 0),
+    precipitationProbability: Number(days.precipitation_probability_max?.[0] ?? 0),
   };
 }
 

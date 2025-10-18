@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, useColorScheme, ActivityIndicator } from 'react-native';
 import { createStyles, lightColors, darkColors } from './WeatherScreen.styles';
-import { geocode, fetchCurrent } from '../services/weather';
+import { geocode, fetchCurrent, fetchTodayForecast } from '../services/weather';
 import { weatherCodeToJa } from '../services/weatherCodes';
 import WeatherIcon from './WeatherIcon';
 
@@ -20,7 +20,9 @@ export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChange
   const [error, setError] = React.useState<string | null>(null);
   const [tempC, setTempC] = React.useState<number | null>(null);
   const [wCode, setWCode] = React.useState<number | null>(null);
-  const [windMs, setWindMs] = React.useState<number | null>(null);
+  const [tMaxC, setTMaxC] = React.useState<number | null>(null);
+  const [tMinC, setTMinC] = React.useState<number | null>(null);
+  const [precipitationProbability, setPrecipitationProbability] = React.useState<number | null>(null);
 
   React.useEffect(() => {
     let mounted = true;
@@ -29,17 +31,24 @@ export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChange
       setError(null);
       try {
         const g = await geocode(location);
-        const cur = await fetchCurrent(g.latitude, g.longitude);
+        const [cur, todayForecast] = await Promise.all([
+          fetchCurrent(g.latitude, g.longitude),
+          fetchTodayForecast(g.latitude, g.longitude)
+        ]);
         if (!mounted) return;
         setTempC(cur.temperatureC);
         setWCode(cur.weatherCode);
-        setWindMs(cur.windSpeedMs);
+        setTMaxC(todayForecast.tMaxC);
+        setTMinC(todayForecast.tMinC);
+        setPrecipitationProbability(todayForecast.precipitationProbability);
       } catch (e) {
         if (!mounted) return;
         setError(e instanceof Error ? e.message : '取得に失敗しました');
         setTempC(null);
         setWCode(null);
-        setWindMs(null);
+        setTMaxC(null);
+        setTMinC(null);
+        setPrecipitationProbability(null);
       } finally {
         mounted && setLoading(false);
       }
@@ -83,7 +92,12 @@ export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChange
           <View>
             <Text style={[styles.desc, { color: colors.textPrimary }]}>{weatherCodeToJa(wCode)}</Text>
             <View style={styles.details}>
-              <Text style={[styles.detailText, { color: colors.textSecondary }]}>風速: {windMs?.toFixed(1) ?? '--'} m/s</Text>
+              <Text style={[styles.detailText, { color: colors.textSecondary }]}>
+                最高: {tMaxC !== null ? `${Math.round(tMaxC)}°` : '--'} / 最低: {tMinC !== null ? `${Math.round(tMinC)}°` : '--'}
+              </Text>
+              <Text style={[styles.detailText, { color: colors.textSecondary }]}>
+                降水確率: {precipitationProbability !== null ? `${Math.round(precipitationProbability)}%` : '--'}
+              </Text>
             </View>
           </View>
         )}
