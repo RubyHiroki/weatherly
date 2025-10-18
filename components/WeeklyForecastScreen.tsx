@@ -99,12 +99,12 @@ export default function WeeklyForecastScreen({ activeTab = 'weekly', onChangeTab
         <View style={styles.nav}>
           <View style={styles.navItem}>
             <Ionicons 
-              name={activeTab === 'current' ? 'location' : 'location-outline'} 
+              name={activeTab === 'current' ? 'partly-sunny' : 'partly-sunny-outline'} 
               size={24} 
               color={activeTab === 'current' ? colors.primary : colors.textMuted}
               onPress={() => onChangeTab && onChangeTab('current')}
             />
-            <Text onPress={() => onChangeTab && onChangeTab('current')} style={[styles.navLabel, { color: activeTab === 'current' ? colors.primary : colors.textMuted }]}>現在地</Text>
+            <Text onPress={() => onChangeTab && onChangeTab('current')} style={[styles.navLabel, { color: activeTab === 'current' ? colors.primary : colors.textMuted }]}>天気予報</Text>
           </View>
           <View style={styles.navItem}>
             <Ionicons 

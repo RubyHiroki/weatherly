@@ -208,12 +208,12 @@ export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChange
         <View style={styles.nav}>
           <View style={styles.navItem}>
             <Ionicons 
-              name={activeTab === 'current' ? 'location' : 'location-outline'} 
+              name={activeTab === 'current' ? 'partly-sunny' : 'partly-sunny-outline'} 
               size={24} 
               color={activeTab === 'current' ? '#ffffff' : dynamicTextColor}
               onPress={() => onChangeTab && onChangeTab('current')}
             />
-            <Text onPress={() => onChangeTab && onChangeTab('current')} style={[styles.navLabel, { color: activeTab === 'current' ? '#ffffff' : dynamicTextColor }]}>現在地</Text>
+            <Text onPress={() => onChangeTab && onChangeTab('current')} style={[styles.navLabel, { color: activeTab === 'current' ? '#ffffff' : dynamicTextColor }]}>天気予報</Text>
           </View>
           <View style={styles.navItem}>
             <Ionicons 
