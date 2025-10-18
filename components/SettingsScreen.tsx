@@ -37,11 +37,12 @@ export default function SettingsScreen({ activeTab = 'settings', onChangeTab, lo
   }, [pref, city, onSaveLocation]);
 
   const listItemColors = {
-    background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.5)',
-    text: isDark ? '#e2e8f0' : '#1e293b',
-    textSecondary: isDark ? '#94a3b8' : '#64748b',
-    border: isDark ? '#374151' : '#e2e8f8',
-    hover: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+    background: isDark ? '#1f2937' : '#ffffff',
+    text: isDark ? '#f8fafc' : '#1e293b',
+    textSecondary: isDark ? '#cbd5e1' : '#64748b',
+    border: isDark ? '#374151' : '#e2e8f0',
+    hover: isDark ? '#374151' : '#f1f5f9',
+    shadow: isDark ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.1)',
   };
 
   return (
@@ -69,9 +70,16 @@ export default function SettingsScreen({ activeTab = 'settings', onChangeTab, lo
         <View style={{ paddingHorizontal: 16 }}>
           <View style={{
             backgroundColor: listItemColors.background,
-            borderRadius: 8,
+            borderRadius: 12,
             overflow: 'hidden',
             marginBottom: 16,
+            shadowColor: listItemColors.shadow,
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.15,
+            shadowRadius: 8,
+            elevation: 4,
+            borderWidth: 1,
+            borderColor: listItemColors.border,
           }}>
             {/* 都道府県設定 */}
             <Pressable
@@ -87,11 +95,13 @@ export default function SettingsScreen({ activeTab = 'settings', onChangeTab, lo
               <Text style={{
                 fontSize: 16,
                 color: listItemColors.text,
+                fontWeight: '500',
               }}>都道府県</Text>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
                 <Text style={{
                   fontSize: 16,
                   color: listItemColors.textSecondary,
+                  fontWeight: '400',
                 }}>{pref}</Text>
                 <Ionicons 
                   name="chevron-forward" 
@@ -121,11 +131,13 @@ export default function SettingsScreen({ activeTab = 'settings', onChangeTab, lo
               <Text style={{
                 fontSize: 16,
                 color: listItemColors.text,
+                fontWeight: '500',
               }}>市区町村</Text>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
                 <Text style={{
                   fontSize: 16,
                   color: listItemColors.textSecondary,
+                  fontWeight: '400',
                 }}>{city}</Text>
                 <Ionicons 
                   name="chevron-forward" 
@@ -172,29 +184,29 @@ export default function SettingsScreen({ activeTab = 'settings', onChangeTab, lo
 
       {/* 都道府県選択モーダル */}
       <Modal visible={showPrefModal} transparent animationType="fade" onRequestClose={() => setShowPrefModal(false)}>
-        <Pressable style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' }} onPress={() => setShowPrefModal(false)}>
-          <View style={{ marginTop: '20%', marginHorizontal: 20 }}>
+        <Pressable style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.6)' }} onPress={() => setShowPrefModal(false)}>
+          <View style={{ marginTop: '15%', marginHorizontal: 20 }}>
             <Pressable onPress={() => {}}>
               <View style={{ 
                 backgroundColor: listItemColors.background, 
-                borderRadius: 8, 
+                borderRadius: 16, 
                 overflow: 'hidden', 
                 borderWidth: 1, 
                 borderColor: listItemColors.border,
                 shadowColor: '#000',
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.2,
-                shadowRadius: 8,
-                elevation: 4,
+                shadowOffset: { width: 0, height: 8 },
+                shadowOpacity: 0.3,
+                shadowRadius: 16,
+                elevation: 8,
               }}>
                 <View style={{ 
-                  padding: 16, 
+                  padding: 20, 
                   borderBottomWidth: 1, 
                   borderBottomColor: listItemColors.border,
                   backgroundColor: listItemColors.background
                 }}>
                   <Text style={{
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: 'bold',
                     color: listItemColors.text,
                     textAlign: 'center',
@@ -214,19 +226,19 @@ export default function SettingsScreen({ activeTab = 'settings', onChangeTab, lo
                         }
                       }}
                       style={({ pressed }) => ({ 
-                        paddingHorizontal: 16, 
-                        paddingVertical: 16, 
+                        paddingHorizontal: 20, 
+                        paddingVertical: 18, 
                         backgroundColor: pressed ? listItemColors.hover : 'transparent',
                       })}
                     >
                       <Text style={{ 
                         color: listItemColors.text, 
                         fontSize: 16,
-                        fontWeight: '400'
+                        fontWeight: '500'
                       }}>{item.name}</Text>
                     </Pressable>
                   )}
-                  ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: listItemColors.border, marginHorizontal: 16 }} />}
+                  ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: listItemColors.border, marginHorizontal: 20 }} />}
                   style={{ maxHeight: 360 }}
                 />
               </View>
@@ -237,29 +249,29 @@ export default function SettingsScreen({ activeTab = 'settings', onChangeTab, lo
 
       {/* 市区町村選択モーダル */}
       <Modal visible={showCityModal} transparent animationType="fade" onRequestClose={() => setShowCityModal(false)}>
-        <Pressable style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' }} onPress={() => setShowCityModal(false)}>
-          <View style={{ marginTop: '20%', marginHorizontal: 20 }}>
+        <Pressable style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.6)' }} onPress={() => setShowCityModal(false)}>
+          <View style={{ marginTop: '15%', marginHorizontal: 20 }}>
             <Pressable onPress={() => {}}>
               <View style={{ 
                 backgroundColor: listItemColors.background, 
-                borderRadius: 8, 
+                borderRadius: 16, 
                 overflow: 'hidden', 
                 borderWidth: 1, 
                 borderColor: listItemColors.border,
                 shadowColor: '#000',
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.2,
-                shadowRadius: 8,
-                elevation: 4,
+                shadowOffset: { width: 0, height: 8 },
+                shadowOpacity: 0.3,
+                shadowRadius: 16,
+                elevation: 8,
               }}>
                 <View style={{ 
-                  padding: 16, 
+                  padding: 20, 
                   borderBottomWidth: 1, 
                   borderBottomColor: listItemColors.border,
                   backgroundColor: listItemColors.background
                 }}>
                   <Text style={{
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: 'bold',
                     color: listItemColors.text,
                     textAlign: 'center',
@@ -275,19 +287,19 @@ export default function SettingsScreen({ activeTab = 'settings', onChangeTab, lo
                         setShowCityModal(false);
                       }}
                       style={({ pressed }) => ({ 
-                        paddingHorizontal: 16, 
-                        paddingVertical: 16, 
+                        paddingHorizontal: 20, 
+                        paddingVertical: 18, 
                         backgroundColor: pressed ? listItemColors.hover : 'transparent',
                       })}
                     >
                       <Text style={{ 
                         color: listItemColors.text, 
                         fontSize: 16,
-                        fontWeight: '400'
+                        fontWeight: '500'
                       }}>{item}</Text>
                     </Pressable>
                   )}
-                  ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: listItemColors.border, marginHorizontal: 16 }} />}
+                  ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: listItemColors.border, marginHorizontal: 20 }} />}
                   style={{ maxHeight: 360 }}
                 />
               </View>
