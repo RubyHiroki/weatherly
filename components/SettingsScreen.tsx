@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, useColorScheme, Pressable, StatusBar, ScrollView, Modal, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { prefectures } from '../data/jpLocations';
-import Dropdown from './Dropdown';
 import { createStyles, lightColors, darkColors } from './WeatherScreen.styles';
 
 type Props = {
