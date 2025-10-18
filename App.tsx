@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { View, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WeatherScreen from './components/WeatherScreen';
 import WeeklyForecastScreen from './components/WeeklyForecastScreen';
@@ -40,7 +41,11 @@ export default function App() {
   };
 
   if (isLoading) {
-    return null; // またはローディング画面を表示
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f6f7f8' }}>
+        <ActivityIndicator size="large" color="#197fe6" />
+      </View>
+    );
   }
 
   if (activeTab === 'current') {

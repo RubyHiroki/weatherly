@@ -12,7 +12,7 @@ type Props = {
   location?: string;
 };
 
-export default function WeeklyForecastScreen({ activeTab = 'weekly', onChangeTab, location = '東京、日本' }: Props) {
+export default function WeeklyForecastScreen({ activeTab = 'weekly', onChangeTab, location = '日本' }: Props) {
   const isDark = useColorScheme() === 'dark';
   const colors = isDark ? darkColors : lightColors;
   const styles = createStyles();
@@ -46,8 +46,25 @@ export default function WeeklyForecastScreen({ activeTab = 'weekly', onChangeTab
     <View style={[styles.root, { backgroundColor: colors.background }]}> 
       <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} backgroundColor={colors.background} />
 
+      {/* Header */}
+      <View style={{
+        paddingTop: 50,
+        paddingHorizontal: 16,
+        paddingBottom: 16,
+        backgroundColor: colors.background,
+        borderBottomWidth: 1,
+        borderBottomColor: colors.divider,
+      }}>
+        <Text style={{
+          fontSize: 18,
+          fontWeight: 'bold',
+          color: colors.textPrimary,
+          textAlign: 'center',
+        }}>週間予報</Text>
+      </View>
+
       {/* Main list */}
-      <ScrollView style={styles.main} contentContainerStyle={{ paddingTop: 50 }}>
+      <ScrollView style={styles.main} contentContainerStyle={{ paddingTop: 0 }}>
         <View style={[styles.divider, { backgroundColor: colors.divider }]} />
         {loading && (
           <View style={{ padding: 16, alignItems: 'center' }}>

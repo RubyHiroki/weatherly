@@ -105,7 +105,7 @@ type Props = {
   location?: string;
 };
 
-export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab, location = '東京、日本' }) => {
+const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab, location = '日本' }) => {
   const isDark = useColorScheme() === 'dark';
   const colors = isDark ? darkColors : lightColors;
 
