@@ -4,7 +4,6 @@ export const lightColors = {
   primary: '#197fe6',
   background: '#f6f7f8',
   textPrimary: '#0f172a',
-  textSecondary: '#64748b',
   textMuted: '#475569',
   border: 'rgba(226, 232, 240, 0.5)',
   footerBg: 'rgba(246, 247, 248, 0.8)',
@@ -14,7 +13,6 @@ export const darkColors = {
   primary: '#197fe6',
   background: '#111921',
   textPrimary: '#ffffff',
-  textSecondary: '#94a3b8',
   textMuted: '#cbd5e1',
   border: 'rgba(71, 85, 105, 0.5)',
   footerBg: 'rgba(17, 25, 33, 0.8)',
@@ -24,29 +22,6 @@ export const createStyles = () =>
   StyleSheet.create({
     root: {
       flex: 1,
-    },
-    header: {
-      padding: 16,
-    },
-    headerRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    },
-    headerIconSpacer: {
-      width: 48,
-      height: 48,
-    },
-    headerTitle: {
-      fontSize: 18,
-      fontWeight: '700',
-    },
-    headerIconButton: {
-      width: 48,
-      height: 48,
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: 24,
     },
     main: {
       flex: 1,
@@ -66,9 +41,6 @@ export const createStyles = () =>
       flexDirection: 'row',
       alignItems: 'center',
       gap: 16 as unknown as number,
-    },
-    sunIcon: {
-      fontSize: 56,
     },
     temp: {
       fontSize: 72,
@@ -102,15 +74,6 @@ export const createStyles = () =>
       justifyContent: 'center',
       paddingVertical: 4,
       flex: 1,
-    },
-    navItemActive: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingVertical: 4,
-      flex: 1,
-    },
-    navIcon: {
-      fontSize: 18,
     },
     navLabel: {
       marginTop: 2,

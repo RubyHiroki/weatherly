@@ -6,26 +6,6 @@ import { geocode, fetchDaily, Daily } from '../services/weather';
 import { weatherCodeToJa } from '../services/weatherCodes';
 import WeatherIcon from './WeatherIcon';
 
-type DayItem = {
-  label: string; // 今日/火/水...
-  date: string;  // 5/20 など
-  icon: string;  // 絵文字で代替
-  labelText: string; // 晴れ、曇り、雨...
-  high: string; // 25°
-  low: string;  // 15°
-  highlight?: boolean; // 今日のみ強調
-};
-
-const SAMPLE: DayItem[] = [
-  { label: '今日', date: '5/20', icon: '☀️', labelText: '晴れ', high: '25°', low: '15°', highlight: true },
-  { label: '火', date: '5/21', icon: '☁️', labelText: '曇り', high: '22°', low: '14°' },
-  { label: '水', date: '5/22', icon: '🌧️', labelText: '雨', high: '20°', low: '16°' },
-  { label: '木', date: '5/23', icon: '☁️', labelText: '曇り', high: '23°', low: '17°' },
-  { label: '金', date: '5/24', icon: '☀️', labelText: '晴れ時々曇り', high: '26°', low: '18°' },
-  { label: '土', date: '5/25', icon: '☀️', labelText: '晴れ', high: '28°', low: '19°' },
-  { label: '日', date: '5/26', icon: '🌧️', labelText: '雨', high: '21°', low: '16°' },
-];
-
 type Props = {
   activeTab?: 'current' | 'weekly' | 'settings';
   onChangeTab?: (tab: 'current' | 'weekly' | 'settings') => void;

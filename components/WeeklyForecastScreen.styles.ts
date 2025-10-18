@@ -6,7 +6,6 @@ export const lightColors = {
   textPrimary: '#0f172a',
   text: '#111827',
   textMuted: '#6b7280',
-  surface: '#ffffff',
   divider: '#e5e7eb',
   footerBg: 'rgba(246, 247, 248, 0.9)',
 };
@@ -17,7 +16,6 @@ export const darkColors = {
   textPrimary: '#ffffff',
   text: '#e5e7eb',
   textMuted: '#9ca3af',
-  surface: '#0b1218',
   divider: '#374151',
   footerBg: 'rgba(17, 25, 33, 0.9)',
 };
@@ -27,26 +25,6 @@ export const createStyles = () =>
     root: {
       flex: 1,
       backgroundColor: 'transparent',
-    },
-    header: {
-      position: 'relative',
-      zIndex: 10,
-      padding: 16,
-    },
-    headerRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    headerBack: {
-      padding: 8,
-      marginRight: 8,
-    },
-    headerTitle: {
-      flex: 1,
-      textAlign: 'center',
-      fontSize: 20,
-      fontWeight: '700',
-      marginRight: 40,
     },
     main: {
       flex: 1,
@@ -100,10 +78,6 @@ export const createStyles = () =>
       fontSize: 12,
       color: '#94a3b8'
     },
-    icon: {
-      fontSize: 28,
-      marginRight: 12,
-    },
     weatherLabel: {
       fontSize: 18,
       fontWeight: '600',
@@ -122,9 +96,6 @@ export const createStyles = () =>
     },
     tempLow: {
       fontSize: 14,
-    },
-    chevron: {
-      fontSize: 18,
     },
     footer: {
       borderTopWidth: 1,
