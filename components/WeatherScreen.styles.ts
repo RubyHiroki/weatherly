@@ -56,7 +56,7 @@ export const createStyles = () =>
       alignItems: 'center',
     },
     detailText: {
-      fontSize: 14,
+      fontSize: 18,
     },
     footer: {
       borderTopWidth: 1,
