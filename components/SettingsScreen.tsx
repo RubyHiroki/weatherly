@@ -63,7 +63,7 @@ export default function SettingsScreen({ activeTab = 'settings', onChangeTab, lo
           onPress={() => {
             const loc = `${pref} ${city}`;
             if (onSaveLocation) onSaveLocation(loc);
-            if (onChangeTab) onChangeTab('weekly');
+            if (onChangeTab) onChangeTab('current');
           }}
           style={({ pressed }) => ({
             marginTop: 12,
