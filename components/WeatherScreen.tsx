@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, useColorScheme, ActivityIndicator } from 'react-native';
+import { View, Text, useColorScheme, ActivityIndicator, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { createStyles, lightColors, darkColors } from './WeatherScreen.styles';
 import { geocode, fetchCurrent, fetchTodayForecast, fetchDaily } from '../services/weather';
@@ -159,12 +159,7 @@ export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChange
 
   return (
     <View style={[styles.root, { backgroundColor: dynamicBackgroundColor }]}> 
-      <View style={styles.header}>
-        <View style={styles.headerRow}>
-          <View style={styles.headerIconSpacer} />
-          <Text style={[styles.headerTitle, { color: dynamicTextColor }]} />
-        </View>
-      </View>
+      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} backgroundColor={dynamicBackgroundColor} />
 
       <View style={styles.main}>
         <View style={styles.centerBlock}>

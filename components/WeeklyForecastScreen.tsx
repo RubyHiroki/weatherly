@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, useColorScheme, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, useColorScheme, ActivityIndicator, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { createStyles, lightColors, darkColors } from './WeeklyForecastScreen.styles';
 import { geocode, fetchDaily, Daily } from '../services/weather';
@@ -64,13 +64,7 @@ export default function WeeklyForecastScreen({ activeTab = 'weekly', onChangeTab
 
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}> 
-      {/* Header */}
-      <View style={[styles.header, { backgroundColor: colors.background }]}> 
-        <View style={styles.headerRow}>
-          <Text style={[{ color: colors.textMuted }, styles.chevron]}>{'‹'}</Text>
-          <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>週間予報</Text>
-        </View>
-      </View>
+      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} backgroundColor={colors.background} />
 
       {/* Main list */}
       <ScrollView style={styles.main}>
@@ -113,7 +107,6 @@ export default function WeeklyForecastScreen({ activeTab = 'weekly', onChangeTab
                   <Text style={[styles.tempHigh, { color: colors.textPrimary }]}>{Math.round(d.tMaxC)}°</Text>
                   <Text style={[styles.tempLow, { color: colors.textMuted }]}>{Math.round(d.tMinC)}°</Text>
                 </View>
-                <Text style={[styles.chevron, { color: colors.textMuted }]}>{'›'}</Text>
               </View>
             </View>
             <View style={[styles.divider, { backgroundColor: colors.divider }]} />

@@ -44,7 +44,7 @@ export const createStyles = () =>
     headerTitle: {
       flex: 1,
       textAlign: 'center',
-      fontSize: 18,
+      fontSize: 20,
       fontWeight: '700',
       marginRight: 40,
     },
@@ -84,20 +84,20 @@ export const createStyles = () =>
     },
     dayTextPrimary: {
       fontWeight: '700',
-      fontSize: 12,
+      fontSize: 14,
       color: '#197fe6',
     },
     dayTextNeutral: {
       fontWeight: '700',
-      fontSize: 12,
+      fontSize: 14,
       color: '#64748b',
     },
     dateTextPrimary: {
-      fontSize: 10,
+      fontSize: 12,
       color: 'rgba(25,127,230,0.9)'
     },
     dateTextNeutral: {
-      fontSize: 10,
+      fontSize: 12,
       color: '#94a3b8'
     },
     icon: {
@@ -105,7 +105,7 @@ export const createStyles = () =>
       marginRight: 12,
     },
     weatherLabel: {
-      fontSize: 16,
+      fontSize: 18,
       fontWeight: '600',
     },
     rowRight: {
@@ -117,11 +117,11 @@ export const createStyles = () =>
       alignItems: 'flex-end',
     },
     tempHigh: {
-      fontSize: 16,
+      fontSize: 18,
       fontWeight: '600',
     },
     tempLow: {
-      fontSize: 12,
+      fontSize: 14,
     },
     chevron: {
       fontSize: 18,

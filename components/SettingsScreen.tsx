@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, useColorScheme, Pressable } from 'react-native';
+import { View, Text, useColorScheme, Pressable, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { prefectures } from '../data/jpLocations';
 import Dropdown from './Dropdown';
@@ -30,15 +30,7 @@ export default function SettingsScreen({ activeTab = 'settings', onChangeTab, lo
 
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}> 
-      <View style={styles.header}>
-        <View style={styles.headerRow}>
-          <View style={styles.headerIconSpacer} />
-          <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>設定</Text>
-          <View style={styles.headerIconButton}>
-            <Text style={{ color: colors.textMuted, fontSize: 20 }}>≡</Text>
-          </View>
-        </View>
-      </View>
+      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} backgroundColor={colors.background} />
 
       <View style={styles.main}>
         <Dropdown
