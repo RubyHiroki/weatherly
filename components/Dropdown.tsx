@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, View, Text, Pressable, TextInput, FlatList, useColorScheme, Animated } from 'react-native';
+import { Modal, View, Text, Pressable, FlatList, useColorScheme, Animated } from 'react-native';
 
 export type DropdownItem = { label: string; value: string };
 
@@ -14,15 +14,8 @@ type Props = {
 export default function Dropdown({ label, value, placeholder = '選択してください', items, onChange }: Props) {
   const isDark = useColorScheme() === 'dark';
   const [open, setOpen] = React.useState(false);
-  const [query, setQuery] = React.useState('');
   const scaleAnim = React.useRef(new Animated.Value(1)).current;
   const rotateAnim = React.useRef(new Animated.Value(0)).current;
-
-  const filtered = React.useMemo(() => {
-    const q = query.trim();
-    if (!q) return items;
-    return items.filter(i => i.label.includes(q));
-  }, [items, query]);
 
   const colors = {
     bg: isDark ? '#1a1f2e' : '#ffffff',
@@ -137,30 +130,13 @@ export default function Dropdown({ label, value, placeholder = '選択してく�
                   borderBottomColor: colors.border,
                   backgroundColor: colors.gradientStart
                 }}>
-                  <TextInput
-                    value={query}
-                    onChangeText={setQuery}
-                    placeholder="🔍 検索"
-                    placeholderTextColor={colors.muted}
-                    style={{
-                      backgroundColor: colors.bg,
-                      color: colors.text,
-                      borderWidth: 1,
-                      borderColor: colors.border,
-                      borderRadius: 12,
-                      height: 44,
-                      paddingHorizontal: 14,
-                      fontSize: 16,
-                      fontWeight: '400',
-                    }}
-                  />
                 </View>
                 <FlatList
-                  data={filtered}
+                  data={items}
                   keyExtractor={(it) => it.value}
                   renderItem={({ item }) => (
                     <Pressable
-                      onPress={() => { onChange(item.value); setOpen(false); setQuery(''); }}
+                      onPress={() => { onChange(item.value); setOpen(false); }}
                       style={({ pressed }) => ({ 
                         paddingHorizontal: 18, 
                         paddingVertical: 16, 
