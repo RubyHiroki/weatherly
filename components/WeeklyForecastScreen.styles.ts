@@ -128,20 +128,20 @@ export const createStyles = () =>
     },
     footer: {
       borderTopWidth: 1,
-      height: 64,
-      alignItems: 'center',
-      justifyContent: 'center',
+      paddingTop: 12,
+      paddingBottom: 12,
       paddingHorizontal: 16,
     },
-    footerNav: {
+    nav: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-around',
-      width: '100%',
     },
     navItem: {
       alignItems: 'center',
       justifyContent: 'center',
+      paddingVertical: 4,
+      flex: 1,
     },
     navLabel: {
       marginTop: 2,

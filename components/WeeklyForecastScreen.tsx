@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, useColorScheme, ActivityIndicator } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { createStyles, lightColors, darkColors } from './WeeklyForecastScreen.styles';
 import { geocode, fetchDaily, Daily } from '../services/weather';
 import { weatherCodeToJa } from '../services/weatherCodes';
@@ -122,17 +123,32 @@ export default function WeeklyForecastScreen({ activeTab = 'weekly', onChangeTab
 
       {/* Footer */}
       <View style={[styles.footer, { borderTopColor: colors.divider, backgroundColor: colors.footerBg }]}>
-        <View style={styles.footerNav}>
+        <View style={styles.nav}>
           <View style={styles.navItem}>
-            <Text onPress={() => onChangeTab && onChangeTab('current')} style={{ color: activeTab === 'current' ? colors.primary : colors.textMuted }}>📍</Text>
+            <Ionicons 
+              name={activeTab === 'current' ? 'location' : 'location-outline'} 
+              size={24} 
+              color={activeTab === 'current' ? colors.primary : colors.textMuted}
+              onPress={() => onChangeTab && onChangeTab('current')}
+            />
             <Text onPress={() => onChangeTab && onChangeTab('current')} style={[styles.navLabel, { color: activeTab === 'current' ? colors.primary : colors.textMuted }]}>現在地</Text>
           </View>
           <View style={styles.navItem}>
-            <Text onPress={() => onChangeTab && onChangeTab('weekly')} style={{ color: activeTab === 'weekly' ? colors.primary : colors.textMuted }}>📆</Text>
+            <Ionicons 
+              name={activeTab === 'weekly' ? 'calendar' : 'calendar-outline'} 
+              size={24} 
+              color={activeTab === 'weekly' ? colors.primary : colors.textMuted}
+              onPress={() => onChangeTab && onChangeTab('weekly')}
+            />
             <Text onPress={() => onChangeTab && onChangeTab('weekly')} style={[styles.navLabel, { color: activeTab === 'weekly' ? colors.primary : colors.textMuted }]}>週間予報</Text>
           </View>
           <View style={styles.navItem}>
-            <Text onPress={() => onChangeTab && onChangeTab('settings')} style={{ color: activeTab === 'settings' ? colors.primary : colors.textMuted }}>⚙️</Text>
+            <Ionicons 
+              name={activeTab === 'settings' ? 'settings' : 'settings-outline'} 
+              size={24} 
+              color={activeTab === 'settings' ? colors.primary : colors.textMuted}
+              onPress={() => onChangeTab && onChangeTab('settings')}
+            />
             <Text onPress={() => onChangeTab && onChangeTab('settings')} style={[styles.navLabel, { color: activeTab === 'settings' ? colors.primary : colors.textMuted }]}>設定</Text>
           </View>
         </View>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, useColorScheme, ActivityIndicator } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { createStyles, lightColors, darkColors } from './WeatherScreen.styles';
 import { geocode, fetchCurrent, fetchTodayForecast, fetchDaily } from '../services/weather';
 import { weatherCodeToJa } from '../services/weatherCodes';
@@ -109,7 +110,7 @@ export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChange
   const colors = isDark ? darkColors : lightColors;
 
   const styles = createStyles();
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
   const [tempC, setTempC] = React.useState<number | null>(null);
   const [wCode, setWCode] = React.useState<number | null>(null);
@@ -168,7 +169,7 @@ export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChange
       <View style={styles.main}>
         <View style={styles.centerBlock}>
           <Text style={[styles.city, { color: dynamicTextColor }]}>{location}</Text>
-          {loading ? (
+          {loading || wCode == null ? (
             <View style={{ marginTop: 16 }}>
               <ActivityIndicator />
             </View>
@@ -184,7 +185,7 @@ export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChange
           )}
         </View>
 
-        {!loading && !error && (
+        {!loading && !error && wCode != null && (
           <View>
             <Text style={[styles.desc, { color: dynamicTextColor }]}>{weatherCodeToJa(wCode)}</Text>
             <View style={styles.details}>
@@ -211,15 +212,30 @@ export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChange
       >
         <View style={styles.nav}>
           <View style={styles.navItem}>
-            <Text onPress={() => onChangeTab && onChangeTab('current')} style={[styles.navIcon, { color: activeTab === 'current' ? '#ffffff' : dynamicTextColor }]}>📍</Text>
+            <Ionicons 
+              name={activeTab === 'current' ? 'location' : 'location-outline'} 
+              size={24} 
+              color={activeTab === 'current' ? '#ffffff' : dynamicTextColor}
+              onPress={() => onChangeTab && onChangeTab('current')}
+            />
             <Text onPress={() => onChangeTab && onChangeTab('current')} style={[styles.navLabel, { color: activeTab === 'current' ? '#ffffff' : dynamicTextColor }]}>現在地</Text>
           </View>
           <View style={styles.navItem}>
-            <Text onPress={() => onChangeTab && onChangeTab('weekly')} style={[styles.navIcon, { color: activeTab === 'weekly' ? '#ffffff' : dynamicTextColor }]}>📆</Text>
+            <Ionicons 
+              name={activeTab === 'weekly' ? 'calendar' : 'calendar-outline'} 
+              size={24} 
+              color={activeTab === 'weekly' ? '#ffffff' : dynamicTextColor}
+              onPress={() => onChangeTab && onChangeTab('weekly')}
+            />
             <Text onPress={() => onChangeTab && onChangeTab('weekly')} style={[styles.navLabel, { color: activeTab === 'weekly' ? '#ffffff' : dynamicTextColor }]}>週間予報</Text>
           </View>
           <View style={styles.navItem}>
-            <Text onPress={() => onChangeTab && onChangeTab('settings')} style={[styles.navIcon, { color: activeTab === 'settings' ? '#ffffff' : dynamicTextColor }]}>⚙️</Text>
+            <Ionicons 
+              name={activeTab === 'settings' ? 'settings' : 'settings-outline'} 
+              size={24} 
+              color={activeTab === 'settings' ? '#ffffff' : dynamicTextColor}
+              onPress={() => onChangeTab && onChangeTab('settings')}
+            />
             <Text onPress={() => onChangeTab && onChangeTab('settings')} style={[styles.navLabel, { color: activeTab === 'settings' ? '#ffffff' : dynamicTextColor }]}>設定</Text>
           </View>
         </View>
