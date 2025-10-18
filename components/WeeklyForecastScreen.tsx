@@ -67,7 +67,7 @@ export default function WeeklyForecastScreen({ activeTab = 'weekly', onChangeTab
       <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} backgroundColor={colors.background} />
 
       {/* Main list */}
-      <ScrollView style={styles.main}>
+      <ScrollView style={styles.main} contentContainerStyle={{ paddingTop: 50 }}>
         <View style={[styles.divider, { backgroundColor: colors.divider }]} />
         {loading && (
           <View style={{ padding: 16, alignItems: 'center' }}>
