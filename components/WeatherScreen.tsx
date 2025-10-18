@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, useColorScheme, ActivityIndicator } from 'react-native';
 import { createStyles, lightColors, darkColors } from './WeatherScreen.styles';
-import { geocode, fetchCurrent, fetchTodayForecast } from '../services/weather';
+import { geocode, fetchCurrent, fetchTodayForecast, fetchDaily } from '../services/weather';
 import { weatherCodeToJa } from '../services/weatherCodes';
 import WeatherIcon from './WeatherIcon';
 
@@ -31,13 +31,15 @@ export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChange
       setError(null);
       try {
         const g = await geocode(location);
-        const [cur, todayForecast] = await Promise.all([
+        const [cur, todayForecast, dailyData] = await Promise.all([
           fetchCurrent(g.latitude, g.longitude),
-          fetchTodayForecast(g.latitude, g.longitude)
+          fetchTodayForecast(g.latitude, g.longitude),
+          fetchDaily(g.latitude, g.longitude)
         ]);
         if (!mounted) return;
         setTempC(cur.temperatureC);
-        setWCode(cur.weatherCode);
+        // 週間予報と同じデータソース（今日の予報）を使用
+        setWCode(dailyData[0]?.weatherCode ?? cur.weatherCode);
         setTMaxC(todayForecast.tMaxC);
         setTMinC(todayForecast.tMinC);
         setPrecipitationProbability(todayForecast.precipitationProbability);

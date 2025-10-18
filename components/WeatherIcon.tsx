@@ -1,6 +1,6 @@
 import React from 'react';
-import { useColorScheme, Animated, Easing } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useColorScheme, Animated, Easing, View } from 'react-native';
+import { MaterialCommunityIcons, Ionicons, Feather } from '@expo/vector-icons';
 
 type Props = {
   code: number | null | undefined;
@@ -11,10 +11,41 @@ type Props = {
 
 export default function WeatherIcon({ code, size = 56, color, animated = true }: Props) {
   const isDark = useColorScheme() === 'dark';
-  const { name, tint, anim } = mapCodeToStyle(code, color, isDark);
+  const { iconFamily, name, tint, anim } = mapCodeToStyle(code, color, isDark);
+
+  const renderIcon = () => {
+    // 薄曇り（コード2）の特別処理：雲と太陽を別々の色で重ね合わせ
+    if (code === 2) {
+      return (
+        <View style={{ position: 'relative', width: size, height: size }}>
+          <Ionicons 
+            name="cloud-outline" 
+            size={size} 
+            color={isDark ? '#9ca3af' : '#6b7280'} 
+            style={{ position: 'absolute' }}
+          />
+          <Ionicons 
+            name="sunny" 
+            size={size * 0.5} 
+            color="#f59e0b" 
+            style={{ position: 'absolute', top: size * 0.15, left: size * 0.25 }}
+          />
+        </View>
+      );
+    }
+
+    switch (iconFamily) {
+      case 'Ionicons':
+        return <Ionicons name={name as any} size={size} color={tint} />;
+      case 'Feather':
+        return <Feather name={name as any} size={size} color={tint} />;
+      default:
+        return <MaterialCommunityIcons name={name as any} size={size} color={tint} />;
+    }
+  };
 
   if (!animated || anim.type === 'none') {
-    return <MaterialCommunityIcons name={name} size={size} color={tint} />;
+    return renderIcon();
   }
 
   // Simple, lightweight animations without extra deps
@@ -22,26 +53,63 @@ export default function WeatherIcon({ code, size = 56, color, animated = true }:
 
   React.useEffect(() => {
     if (anim.type === 'rotate') {
+      // 太陽の回転アニメーション - より滑らかで自然な動き
       Animated.loop(
         Animated.timing(progress, {
           toValue: 1,
-          duration: 8000,
+          duration: 12000, // よりゆっくりとした回転
           easing: Easing.linear,
           useNativeDriver: true,
         })
       ).start();
     } else if (anim.type === 'float') {
+      // 雲や曇りの浮遊アニメーション
       Animated.loop(
         Animated.sequence([
-          Animated.timing(progress, { toValue: 1, duration: 1500, easing: Easing.inOut(Easing.quad), useNativeDriver: true }),
-          Animated.timing(progress, { toValue: 0, duration: 1500, easing: Easing.inOut(Easing.quad), useNativeDriver: true }),
+          Animated.timing(progress, { toValue: 1, duration: 2000, easing: Easing.inOut(Easing.quad), useNativeDriver: true }),
+          Animated.timing(progress, { toValue: 0, duration: 2000, easing: Easing.inOut(Easing.quad), useNativeDriver: true }),
         ])
       ).start();
     } else if (anim.type === 'pulse') {
+      // 雷のパルスアニメーション
       Animated.loop(
         Animated.sequence([
-          Animated.timing(progress, { toValue: 1, duration: 900, easing: Easing.inOut(Easing.quad), useNativeDriver: true }),
-          Animated.timing(progress, { toValue: 0, duration: 900, easing: Easing.inOut(Easing.quad), useNativeDriver: true }),
+          Animated.timing(progress, { toValue: 1, duration: 600, easing: Easing.inOut(Easing.quad), useNativeDriver: true }),
+          Animated.timing(progress, { toValue: 0, duration: 600, easing: Easing.inOut(Easing.quad), useNativeDriver: true }),
+        ])
+      ).start();
+    } else if (anim.type === 'rain') {
+      // おしゃれな雨のアニメーション - 複数の動きの組み合わせ
+      Animated.loop(
+        Animated.sequence([
+          Animated.parallel([
+            Animated.timing(progress, { 
+              toValue: 1, 
+              duration: 1200, 
+              easing: Easing.bezier(0.25, 0.1, 0.25, 1), 
+              useNativeDriver: true 
+            }),
+            Animated.timing(progress, { 
+              toValue: 1, 
+              duration: 1200, 
+              easing: Easing.inOut(Easing.sin), 
+              useNativeDriver: true 
+            })
+          ]),
+          Animated.timing(progress, { 
+            toValue: 0, 
+            duration: 200, 
+            easing: Easing.out(Easing.back(1.2)), 
+            useNativeDriver: true 
+          }),
+        ])
+      ).start();
+    } else if (anim.type === 'sunshine') {
+      // 太陽の光のアニメーション - 回転とスケールの組み合わせ
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(progress, { toValue: 1, duration: 3000, easing: Easing.inOut(Easing.quad), useNativeDriver: true }),
+          Animated.timing(progress, { toValue: 0, duration: 3000, easing: Easing.inOut(Easing.quad), useNativeDriver: true }),
         ])
       ).start();
     }
@@ -50,23 +118,64 @@ export default function WeatherIcon({ code, size = 56, color, animated = true }:
 
   const style = (() => {
     if (anim.type === 'rotate') {
+      // 太陽の回転アニメーション
       const rotate = progress.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] });
       return { transform: [{ rotate }] };
     }
     if (anim.type === 'float') {
-      const translateY = progress.interpolate({ inputRange: [0, 1], outputRange: [0, -6] });
+      // 雲の浮遊アニメーション
+      const translateY = progress.interpolate({ inputRange: [0, 1], outputRange: [0, -8] });
       return { transform: [{ translateY }] };
     }
     if (anim.type === 'pulse') {
-      const scale = progress.interpolate({ inputRange: [0, 1], outputRange: [1, 1.08] });
+      // 雷のパルスアニメーション
+      const scale = progress.interpolate({ inputRange: [0, 1], outputRange: [1, 1.15] });
       return { transform: [{ scale }] };
+    }
+    if (anim.type === 'rain') {
+      // おしゃれな雨のアニメーション - 複数の動きの組み合わせ
+      const translateY = progress.interpolate({ 
+        inputRange: [0, 0.5, 1], 
+        outputRange: [0, -6, -12] 
+      });
+      const translateX = progress.interpolate({ 
+        inputRange: [0, 0.3, 0.7, 1], 
+        outputRange: [0, 2, -1, 0] 
+      });
+      const scale = progress.interpolate({ 
+        inputRange: [0, 0.5, 1], 
+        outputRange: [1, 1.05, 1.1] 
+      });
+      const rotate = progress.interpolate({ 
+        inputRange: [0, 1], 
+        outputRange: ['0deg', '3deg'] 
+      });
+      const opacity = progress.interpolate({ 
+        inputRange: [0, 0.8, 1], 
+        outputRange: [1, 0.8, 0.4] 
+      });
+      return { 
+        transform: [
+          { translateY }, 
+          { translateX }, 
+          { scale }, 
+          { rotate }
+        ], 
+        opacity 
+      };
+    }
+    if (anim.type === 'sunshine') {
+      // 太陽の光のアニメーション - スケールと回転の組み合わせ
+      const scale = progress.interpolate({ inputRange: [0, 1], outputRange: [1, 1.1] });
+      const rotate = progress.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '5deg'] });
+      return { transform: [{ scale }, { rotate }] };
     }
     return {};
   })();
 
   return (
     <Animated.View style={style}>
-      <MaterialCommunityIcons name={name} size={size} color={tint} />
+      {renderIcon()}
     </Animated.View>
   );
 }
@@ -75,51 +184,60 @@ function mapCodeToStyle(
   code: number | null | undefined,
   overrideColor: string | undefined,
   isDark: boolean
-): { name: keyof typeof MaterialCommunityIcons.glyphMap; tint: string; anim: { type: 'none' | 'rotate' | 'float' | 'pulse' } } {
+): { iconFamily: 'MaterialCommunityIcons' | 'Ionicons' | 'Feather'; name: string; tint: string; anim: { type: 'none' | 'rotate' | 'float' | 'pulse' | 'rain' | 'sunshine' } } {
   const base = isDark ? '#e5e7eb' : '#334155';
   if (code == null) {
-    return { name: 'weather-partly-cloudy', tint: overrideColor ?? base, anim: { type: 'none' } };
+    return { iconFamily: 'Feather', name: 'cloud', tint: overrideColor ?? base, anim: { type: 'none' } };
   }
 
   // Defaults
-  let name: keyof typeof MaterialCommunityIcons.glyphMap = 'weather-partly-cloudy';
+  let iconFamily: 'MaterialCommunityIcons' | 'Ionicons' | 'Feather' = 'Feather';
+  let name: string = 'cloud';
   let tint = base;
-  let anim: 'none' | 'rotate' | 'float' | 'pulse' = 'none';
+  let anim: 'none' | 'rotate' | 'float' | 'pulse' | 'rain' | 'sunshine' = 'none';
 
-  // Color palette
-  const yellow = '#fbbf24';
-  const orange = '#fb923c';
-  const blue = '#60a5fa';
-  const cyan = '#22d3ee';
-  const indigo = '#6366f1';
-  const gray = isDark ? '#94a3b8' : '#64748b';
+  // Color palette - より洗練された色合い
+  const yellow = '#f59e0b'; // より鮮やかな黄色
+  const orange = '#f97316'; // より鮮やかなオレンジ
+  const blue = '#3b82f6'; // より鮮やかな青
+  const cyan = '#06b6d4'; // より鮮やかなシアン
+  const indigo = '#6366f1'; // インディゴ
+  const gray = isDark ? '#9ca3af' : '#6b7280'; // より洗練されたグレー
+  const purple = '#8b5cf6'; // 紫
+  const pink = '#ec4899'; // ピンク
 
   switch (code) {
     case 0:
     case 1:
-      name = 'weather-sunny';
+      iconFamily = 'Feather';
+      name = 'sun';
       tint = yellow;
-      anim = 'rotate';
+      anim = 'sunshine';
       break;
     case 2:
-      name = 'weather-partly-cloudy';
+      iconFamily = 'Ionicons';
+      name = 'partly-sunny';
       tint = orange;
       anim = 'float';
       break;
     case 3:
-      name = 'weather-cloudy';
+      iconFamily = 'Feather';
+      name = 'cloud';
       tint = gray;
       anim = 'float';
       break;
     case 45:
     case 48:
-      name = 'weather-fog';
+      iconFamily = 'Feather';
+      name = 'cloud-off';
       tint = gray;
+      anim = 'float';
       break;
     case 51:
     case 53:
     case 55:
-      name = 'weather-partly-rainy';
+      iconFamily = 'Feather';
+      name = 'cloud-drizzle';
       tint = blue;
       anim = 'float';
       break;
@@ -130,7 +248,8 @@ function mapCodeToStyle(
     case 65:
     case 66:
     case 67:
-      name = 'weather-rainy';
+      iconFamily = 'Feather';
+      name = 'cloud-rain';
       tint = blue;
       anim = 'float';
       break;
@@ -138,36 +257,42 @@ function mapCodeToStyle(
     case 73:
     case 75:
     case 77:
-      name = 'weather-snowy';
+      iconFamily = 'Feather';
+      name = 'cloud-snow';
       tint = cyan;
       anim = 'float';
       break;
     case 80:
     case 81:
     case 82:
-      name = 'weather-pouring';
+      iconFamily = 'Feather';
+      name = 'cloud-rain';
       tint = blue;
       anim = 'float';
       break;
     case 85:
     case 86:
-      name = 'weather-snowy-heavy';
+      iconFamily = 'Feather';
+      name = 'cloud-snow';
       tint = cyan;
       anim = 'float';
       break;
     case 95:
     case 96:
     case 99:
-      name = 'weather-lightning-rainy';
-      tint = indigo;
+      iconFamily = 'Ionicons';
+      name = 'thunderstorm';
+      tint = purple;
       anim = 'pulse';
       break;
     default:
-      name = 'weather-partly-cloudy';
+      iconFamily = 'Feather';
+      name = 'cloud';
       tint = gray;
+      anim = 'float';
   }
 
-  return { name, tint: overrideColor ?? tint, anim: { type: anim } };
+  return { iconFamily, name, tint: overrideColor ?? tint, anim: { type: anim } };
 }
 
 
