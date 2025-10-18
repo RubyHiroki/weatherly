@@ -63,9 +63,6 @@ export const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChange
         <View style={styles.headerRow}>
           <View style={styles.headerIconSpacer} />
           <Text style={[styles.headerTitle, { color: colors.textPrimary }]} />
-          <View style={styles.headerIconButton}>
-            <Text style={{ color: colors.textMuted, fontSize: 20 }}>≡</Text>
-          </View>
         </View>
       </View>
 
