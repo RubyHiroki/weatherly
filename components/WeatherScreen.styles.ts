@@ -92,13 +92,13 @@ export const createStyles = () =>
       marginBottom: 12,
       textAlign: 'center',
     },
-    hourlyScrollContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
+    hourlyScrollContent: {
+      paddingHorizontal: 8,
     },
     hourlyItem: {
       alignItems: 'center',
-      minWidth: 60,
+      minWidth: 80,
+      marginHorizontal: 8,
     },
     hourlyTime: {
       fontSize: 12,

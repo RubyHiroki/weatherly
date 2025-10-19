@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, useColorScheme, ActivityIndicator, StatusBar } from 'react-native';
+import { View, Text, useColorScheme, ActivityIndicator, StatusBar, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { createStyles, lightColors, darkColors } from './WeatherScreen.styles';
 import { geocode, fetchCurrent, fetchTodayForecast, fetchDaily, fetchHourly, Hourly } from '../services/weather';
@@ -213,8 +213,15 @@ const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab, lo
       {!loading && !error && hourlyData.length > 0 && (
         <View style={[styles.hourlyContainer, { backgroundColor: dynamicBackgroundColor, opacity: 0.9 }]}>
           <Text style={[styles.hourlyTitle, { color: dynamicTextColor }]}>3時間毎の天気</Text>
-          <View style={styles.hourlyScrollContainer}>
-            {hourlyData.slice(0, 8).map((hour, index) => (
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.hourlyScrollContent}
+          >
+            {hourlyData
+              .filter(hour => new Date(hour.timeIso) > new Date()) // 現在時刻より後の時間のみ
+              .slice(0, 8) // 最大8時間
+              .map((hour, index) => (
               <View key={index} style={styles.hourlyItem}>
                 <Text style={[styles.hourlyTime, { color: dynamicTextColor }]}>
                   {formatTime(hour.timeIso)}
@@ -231,7 +238,7 @@ const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab, lo
                 </Text>
               </View>
             ))}
-          </View>
+          </ScrollView>
         </View>
       )}
 
