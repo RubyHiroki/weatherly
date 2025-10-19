@@ -210,10 +210,10 @@ const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab, lo
         )}
       </View>
 
-      {/* 3時間毎の天気 */}
+      {/* 1時間毎の天気 */}
       {!loading && !error && hourlyData.length > 0 && (
         <View style={[styles.hourlyContainer, { backgroundColor: dynamicBackgroundColor, opacity: 0.9 }]}>
-          <Text style={[styles.hourlyTitle, { color: dynamicTextColor }]}>3時間毎の天気</Text>
+          <Text style={[styles.hourlyTitle, { color: dynamicTextColor }]}>1時間毎の天気</Text>
           <ScrollView 
             horizontal 
             showsHorizontalScrollIndicator={false}
