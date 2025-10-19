@@ -2,6 +2,7 @@ export type GeocodeResult = { latitude: number; longitude: number; name: string 
 export type Current = { temperatureC: number; windSpeedMs: number; weatherCode: number; timeIso: string };
 export type TodayForecast = { tMaxC: number; tMinC: number; precipitationProbability: number };
 export type Daily = { dateIso: string; tMaxC: number; tMinC: number; weatherCode: number };
+export type Hourly = { timeIso: string; temperatureC: number; weatherCode: number; precipitationProbability: number };
 
 const GEOCODE = 'https://geocoding-api.open-meteo.com/v1/search';
 const FORECAST = 'https://api.open-meteo.com/v1/forecast';
@@ -89,6 +90,26 @@ export async function fetchTodayForecast(lat: number, lon: number): Promise<Toda
     tMinC: Number(days.temperature_2m_min?.[0] ?? 0),
     precipitationProbability: Number(days.precipitation_probability_max?.[0] ?? 0),
   };
+}
+
+export async function fetchHourly(lat: number, lon: number): Promise<Hourly[]> {
+  const url = `${FORECAST}?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code,precipitation_probability&timezone=auto`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('3時間毎の天気の取得に失敗しました');
+  const json = await res.json();
+  const hourly = json?.hourly;
+  if (!hourly) throw new Error('3時間毎の天気データがありません');
+  const out: Hourly[] = [];
+  const len = Math.min(hourly.time?.length ?? 0, hourly.temperature_2m?.length ?? 0);
+  for (let i = 0; i < len; i++) {
+    out.push({
+      timeIso: String(hourly.time[i]),
+      temperatureC: Number(hourly.temperature_2m[i]),
+      weatherCode: Number(hourly.weather_code[i]),
+      precipitationProbability: Number(hourly.precipitation_probability[i]),
+    });
+  }
+  return out;
 }
 
 export async function fetchDaily(lat: number, lon: number): Promise<Daily[]> {

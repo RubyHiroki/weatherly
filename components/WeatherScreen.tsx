@@ -2,9 +2,19 @@ import React from 'react';
 import { View, Text, useColorScheme, ActivityIndicator, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { createStyles, lightColors, darkColors } from './WeatherScreen.styles';
-import { geocode, fetchCurrent, fetchTodayForecast, fetchDaily } from '../services/weather';
+import { geocode, fetchCurrent, fetchTodayForecast, fetchDaily, fetchHourly, Hourly } from '../services/weather';
 import { weatherCodeToJa } from '../services/weatherCodes';
 import WeatherIcon from './WeatherIcon';
+
+// 時間をフォーマットする関数
+function formatTime(timeIso: string): string {
+  const date = new Date(timeIso);
+  return date.toLocaleTimeString('ja-JP', { 
+    hour: '2-digit', 
+    minute: '2-digit',
+    hour12: false 
+  });
+}
 
 // 背景色に応じた文字色を取得する関数
 function getTextColorForBackground(backgroundColor: string): string {
@@ -117,6 +127,7 @@ const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab, lo
   const [tMaxC, setTMaxC] = React.useState<number | null>(null);
   const [tMinC, setTMinC] = React.useState<number | null>(null);
   const [precipitationProbability, setPrecipitationProbability] = React.useState<number | null>(null);
+  const [hourlyData, setHourlyData] = React.useState<Hourly[]>([]);
   
   // 動的な背景色と文字色を取得
   const dynamicBackgroundColor = getWeatherBackgroundColor(wCode, isDark);
@@ -129,10 +140,11 @@ const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab, lo
       setError(null);
       try {
         const g = await geocode(location);
-        const [cur, todayForecast, dailyData] = await Promise.all([
+        const [cur, todayForecast, dailyData, hourlyData] = await Promise.all([
           fetchCurrent(g.latitude, g.longitude),
           fetchTodayForecast(g.latitude, g.longitude),
-          fetchDaily(g.latitude, g.longitude)
+          fetchDaily(g.latitude, g.longitude),
+          fetchHourly(g.latitude, g.longitude)
         ]);
         if (!mounted) return;
         setTempC(cur.temperatureC);
@@ -141,6 +153,7 @@ const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab, lo
         setTMaxC(todayForecast.tMaxC);
         setTMinC(todayForecast.tMinC);
         setPrecipitationProbability(todayForecast.precipitationProbability);
+        setHourlyData(hourlyData);
       } catch (e) {
         if (!mounted) return;
         setError(e instanceof Error ? e.message : '取得に失敗しました');
@@ -149,6 +162,7 @@ const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab, lo
         setTMaxC(null);
         setTMinC(null);
         setPrecipitationProbability(null);
+        setHourlyData([]);
       } finally {
         mounted && setLoading(false);
       }
@@ -172,7 +186,7 @@ const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab, lo
             <Text style={{ color: '#ef4444', marginTop: 16 }}>{error}</Text>
           ) : (
             <View style={styles.iconRow}>
-              <WeatherIcon code={wCode} backgroundColor={dynamicBackgroundColor} />
+              <WeatherIcon code={wCode} />
               <Text style={[styles.temp, { color: dynamicTextColor }]}>
                 {tempC !== null ? `${Math.round(tempC)}°` : '--'}
               </Text>
@@ -194,6 +208,32 @@ const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab, lo
           </View>
         )}
       </View>
+
+      {/* 3時間毎の天気 */}
+      {!loading && !error && hourlyData.length > 0 && (
+        <View style={[styles.hourlyContainer, { backgroundColor: dynamicBackgroundColor, opacity: 0.9 }]}>
+          <Text style={[styles.hourlyTitle, { color: dynamicTextColor }]}>3時間毎の天気</Text>
+          <View style={styles.hourlyScrollContainer}>
+            {hourlyData.slice(0, 8).map((hour, index) => (
+              <View key={index} style={styles.hourlyItem}>
+                <Text style={[styles.hourlyTime, { color: dynamicTextColor }]}>
+                  {formatTime(hour.timeIso)}
+                </Text>
+                <WeatherIcon 
+                  code={hour.weatherCode} 
+                  size={32} 
+                />
+                <Text style={[styles.hourlyTemp, { color: dynamicTextColor }]}>
+                  {Math.round(hour.temperatureC)}°
+                </Text>
+                <Text style={[styles.hourlyPrecip, { color: dynamicTextColor, opacity: 0.7 }]}>
+                  {Math.round(hour.precipitationProbability)}%
+                </Text>
+              </View>
+            ))}
+          </View>
+        </View>
+      )}
 
       <View
         style={[

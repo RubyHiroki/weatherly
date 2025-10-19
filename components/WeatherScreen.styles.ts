@@ -80,4 +80,38 @@ export const createStyles = () =>
       fontSize: 12,
       fontWeight: '600',
     },
+    hourlyContainer: {
+      marginHorizontal: 16,
+      marginVertical: 8,
+      borderRadius: 12,
+      padding: 16,
+    },
+    hourlyTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+      marginBottom: 12,
+      textAlign: 'center',
+    },
+    hourlyScrollContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+    hourlyItem: {
+      alignItems: 'center',
+      minWidth: 60,
+    },
+    hourlyTime: {
+      fontSize: 12,
+      fontWeight: '500',
+      marginBottom: 4,
+    },
+    hourlyTemp: {
+      fontSize: 14,
+      fontWeight: '600',
+      marginTop: 4,
+    },
+    hourlyPrecip: {
+      fontSize: 10,
+      marginTop: 2,
+    },
   });
