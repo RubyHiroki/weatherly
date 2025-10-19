@@ -95,10 +95,10 @@ export async function fetchTodayForecast(lat: number, lon: number): Promise<Toda
 export async function fetchHourly(lat: number, lon: number): Promise<Hourly[]> {
   const url = `${FORECAST}?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code,precipitation_probability&timezone=auto`;
   const res = await fetch(url);
-  if (!res.ok) throw new Error('3時間毎の天気の取得に失敗しました');
+  if (!res.ok) throw new Error('1時間毎の天気の取得に失敗しました');
   const json = await res.json();
   const hourly = json?.hourly;
-  if (!hourly) throw new Error('3時間毎の天気データがありません');
+  if (!hourly) throw new Error('1時間毎の天気データがありません');
   const out: Hourly[] = [];
   const len = Math.min(hourly.time?.length ?? 0, hourly.temperature_2m?.length ?? 0);
   for (let i = 0; i < len; i++) {
