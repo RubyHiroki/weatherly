@@ -17,19 +17,6 @@ function formatTime(timeIso: string): string {
   });
 }
 
-// 背景色に応じた文字色を取得する関数
-function getTextColorForBackground(backgroundColor: string): string {
-  // 背景色の明度を計算（簡易版）
-  const hex = backgroundColor.replace('#', '');
-  const r = parseInt(hex.substr(0, 2), 16);
-  const g = parseInt(hex.substr(2, 2), 16);
-  const b = parseInt(hex.substr(4, 2), 16);
-  const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-  
-  // 明度が128より低い場合は白文字、高い場合は黒文字
-  return brightness < 128 ? '#ffffff' : '#000000';
-}
-
 // 時間帯と天気に基づく背景色を取得する関数
 function getWeatherBackgroundColor(weatherCode: number | null, isDark: boolean): string {
   const hour = new Date().getHours();
@@ -132,7 +119,7 @@ const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab, lo
   
   // 動的な背景色と文字色を取得
   const dynamicBackgroundColor = getWeatherBackgroundColor(wCode, isDark);
-  const dynamicTextColor = getTextColorForBackground(dynamicBackgroundColor);
+  const dynamicTextColor = isDark ? '#f8fafc' : '#1e293b';
 
   React.useEffect(() => {
     let mounted = true;

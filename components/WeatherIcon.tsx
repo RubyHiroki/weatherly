@@ -2,38 +2,14 @@ import React from 'react';
 import { useColorScheme, Animated, Easing, View } from 'react-native';
 import { MaterialCommunityIcons, Ionicons, Feather } from '@expo/vector-icons';
 
-// 背景色に応じた雲の色を取得する関数
-function getCloudColorForBackground(backgroundColor?: string): string {
-  if (!backgroundColor) {
-    return '#6b7280'; // デフォルトのグレー
-  }
-  
-  // 背景色の明度を計算
-  const hex = backgroundColor.replace('#', '');
-  const r = parseInt(hex.substr(0, 2), 16);
-  const g = parseInt(hex.substr(2, 2), 16);
-  const b = parseInt(hex.substr(4, 2), 16);
-  const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-  
-  // 背景が明るい場合は暗い雲、暗い場合は明るい雲
-  if (brightness > 128) {
-    // 明るい背景 → 暗い雲
-    return '#374151';
-  } else {
-    // 暗い背景 → 明るい雲
-    return '#d1d5db';
-  }
-}
-
 type Props = {
   code: number | null | undefined;
   size?: number;
   color?: string;
   animated?: boolean;
-  backgroundColor?: string; // 背景色を追加
 };
 
-export default function WeatherIcon({ code, size = 56, color, animated = true, backgroundColor }: Props) {
+export default function WeatherIcon({ code, size = 56, color, animated = true }: Props) {
   const isDark = useColorScheme() === 'dark';
   
   // Hooksを常に同じ順序で呼び出す

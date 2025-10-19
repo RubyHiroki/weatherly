@@ -29,14 +29,11 @@ export default function WeatherAdvice({ hourlyData, isDark = false }: Props) {
   const generateAdvice = (): AdviceType => {
     const avgTemp = futureHours.reduce((sum, hour) => sum + hour.temperatureC, 0) / futureHours.length;
     const maxPrecip = Math.max(...futureHours.map(hour => hour.precipitationProbability));
-    const avgPrecip = futureHours.reduce((sum, hour) => sum + hour.precipitationProbability, 0) / futureHours.length;
     
     // 時間帯の判定
     const currentHour = new Date().getHours();
-    const isMorning = currentHour >= 6 && currentHour < 12;
     const isAfternoon = currentHour >= 12 && currentHour < 18;
     const isEvening = currentHour >= 18 && currentHour < 22;
-    const isNight = currentHour >= 22 || currentHour < 6;
     
     // 外出時間の長さを考慮（今後6時間のデータを使用）
     const outdoorHours = futureHours.length;
