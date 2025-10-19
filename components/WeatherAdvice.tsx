@@ -114,7 +114,7 @@ export default function WeatherAdvice({ hourlyData, isDark = false }: Props) {
     textSecondary: isDark ? '#cbd5e1' : '#64748b',
     border: isDark ? '#374151' : '#e2e8f0',
     accent: '#197fe6',
-    warning: '#f59e0b',
+    warning: '#3b82f6',
     success: '#10b981',
   };
 

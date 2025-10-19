@@ -59,7 +59,6 @@ export const createStyles = () =>
       fontSize: 18,
     },
     footer: {
-      borderTopWidth: 1,
       paddingTop: 12,
       paddingBottom: 12,
       paddingHorizontal: 16,
@@ -68,6 +67,7 @@ export const createStyles = () =>
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-around',
+      backgroundColor: 'transparent',
     },
     navItem: {
       alignItems: 'center',

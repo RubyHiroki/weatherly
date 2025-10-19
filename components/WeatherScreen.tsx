@@ -168,7 +168,7 @@ const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab, lo
           <Text style={[styles.city, { color: dynamicTextColor }]}>{location}</Text>
           {loading || wCode == null ? (
             <View style={{ marginTop: 16 }}>
-              <ActivityIndicator />
+              <ActivityIndicator color={isDark ? '#ffffff' : '#1e293b'} />
             </View>
           ) : error ? (
             <Text style={{ color: '#ef4444', marginTop: 16 }}>{error}</Text>
@@ -242,7 +242,6 @@ const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab, lo
         style={[
           styles.footer,
           {
-            borderTopColor: dynamicTextColor,
             backgroundColor: dynamicBackgroundColor,
             opacity: 0.9,
           },
@@ -253,28 +252,28 @@ const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab, lo
             <Ionicons 
               name={activeTab === 'current' ? 'partly-sunny' : 'partly-sunny-outline'} 
               size={24} 
-              color={activeTab === 'current' ? '#ffffff' : dynamicTextColor}
+              color={activeTab === 'current' ? '#ffffff' : (isDark ? '#ffffff' : '#1e293b')}
               onPress={() => onChangeTab && onChangeTab('current')}
             />
-            <Text onPress={() => onChangeTab && onChangeTab('current')} style={[styles.navLabel, { color: activeTab === 'current' ? '#ffffff' : dynamicTextColor }]}>天気予報</Text>
+            <Text onPress={() => onChangeTab && onChangeTab('current')} style={[styles.navLabel, { color: activeTab === 'current' ? '#ffffff' : (isDark ? '#ffffff' : '#1e293b') }]}>天気予報</Text>
           </View>
           <View style={styles.navItem}>
             <Ionicons 
               name={activeTab === 'weekly' ? 'calendar' : 'calendar-outline'} 
               size={24} 
-              color={activeTab === 'weekly' ? '#ffffff' : dynamicTextColor}
+              color={activeTab === 'weekly' ? '#ffffff' : (isDark ? '#ffffff' : '#1e293b')}
               onPress={() => onChangeTab && onChangeTab('weekly')}
             />
-            <Text onPress={() => onChangeTab && onChangeTab('weekly')} style={[styles.navLabel, { color: activeTab === 'weekly' ? '#ffffff' : dynamicTextColor }]}>週間予報</Text>
+            <Text onPress={() => onChangeTab && onChangeTab('weekly')} style={[styles.navLabel, { color: activeTab === 'weekly' ? '#ffffff' : (isDark ? '#ffffff' : '#1e293b') }]}>週間予報</Text>
           </View>
           <View style={styles.navItem}>
             <Ionicons 
               name={activeTab === 'settings' ? 'settings' : 'settings-outline'} 
               size={24} 
-              color={activeTab === 'settings' ? '#ffffff' : dynamicTextColor}
+              color={activeTab === 'settings' ? '#ffffff' : (isDark ? '#ffffff' : '#1e293b')}
               onPress={() => onChangeTab && onChangeTab('settings')}
             />
-            <Text onPress={() => onChangeTab && onChangeTab('settings')} style={[styles.navLabel, { color: activeTab === 'settings' ? '#ffffff' : dynamicTextColor }]}>設定</Text>
+            <Text onPress={() => onChangeTab && onChangeTab('settings')} style={[styles.navLabel, { color: activeTab === 'settings' ? '#ffffff' : (isDark ? '#ffffff' : '#1e293b') }]}>設定</Text>
           </View>
         </View>
       </View>
