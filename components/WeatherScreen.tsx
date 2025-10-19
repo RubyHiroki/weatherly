@@ -5,6 +5,7 @@ import { createStyles, lightColors, darkColors } from './WeatherScreen.styles';
 import { geocode, fetchCurrent, fetchTodayForecast, fetchDaily, fetchHourly, Hourly } from '../services/weather';
 import { weatherCodeToJa } from '../services/weatherCodes';
 import WeatherIcon from './WeatherIcon';
+import WeatherAdvice from './WeatherAdvice';
 
 // 時間をフォーマットする関数
 function formatTime(timeIso: string): string {
@@ -240,6 +241,11 @@ const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab, lo
             ))}
           </ScrollView>
         </View>
+      )}
+
+      {/* AI天気アドバイス */}
+      {!loading && !error && hourlyData.length > 0 && (
+        <WeatherAdvice hourlyData={hourlyData} isDark={isDark} />
       )}
 
       <View
