@@ -231,6 +231,9 @@ const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab, lo
                   code={hour.weatherCode} 
                   size={32} 
                 />
+                <Text style={[styles.hourlyWeather, { color: dynamicTextColor, opacity: 0.8 }]}>
+                  {weatherCodeToJa(hour.weatherCode)}
+                </Text>
                 <Text style={[styles.hourlyTemp, { color: dynamicTextColor }]}>
                   {Math.round(hour.temperatureC)}°
                 </Text>

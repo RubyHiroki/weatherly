@@ -105,6 +105,13 @@ export const createStyles = () =>
       fontWeight: '500',
       marginBottom: 4,
     },
+    hourlyWeather: {
+      fontSize: 10,
+      fontWeight: '500',
+      marginTop: 2,
+      marginBottom: 2,
+      textAlign: 'center',
+    },
     hourlyTemp: {
       fontSize: 14,
       fontWeight: '600',

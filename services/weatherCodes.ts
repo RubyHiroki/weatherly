@@ -1,5 +1,5 @@
 const CODE_TO_JA: Record<number, string> = {
-  0: '快晴',
+  0: '晴れ',
   1: '晴れ',
   2: '薄曇り',
   3: '曇り',

@@ -37,7 +37,7 @@ export default function WeatherIcon({ code, size = 56, color, animated = true, b
   const isDark = useColorScheme() === 'dark';
   
   // Hooksを常に同じ順序で呼び出す
-  const progress = React.useRef(new Animated.Value(0)).current;
+  const [progress] = React.useState(() => new Animated.Value(0));
   
   const { iconFamily, name, tint, anim } = mapCodeToStyle(code, color, isDark);
 
@@ -105,28 +105,63 @@ export default function WeatherIcon({ code, size = 56, color, animated = true, b
     
     if (anim.type === 'rotate') {
       // 太陽の回転アニメーション
-      const rotate = progress.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] });
-      return { transform: [{ rotate }] };
+      return { 
+        transform: [{ 
+          rotate: progress.interpolate({ 
+            inputRange: [0, 1], 
+            outputRange: ['0deg', '360deg'],
+            extrapolate: 'clamp'
+          })
+        }] 
+      };
     }
     if (anim.type === 'float') {
       // 雲の浮遊アニメーション
-      const translateY = progress.interpolate({ inputRange: [0, 1], outputRange: [0, -8] });
-      return { transform: [{ translateY }] };
+      return { 
+        transform: [{ 
+          translateY: progress.interpolate({ 
+            inputRange: [0, 1], 
+            outputRange: [0, -8],
+            extrapolate: 'clamp'
+          })
+        }] 
+      };
     }
     if (anim.type === 'pulse') {
       // 雷のパルスアニメーション
-      const scale = progress.interpolate({ inputRange: [0, 1], outputRange: [1, 1.15] });
-      return { transform: [{ scale }] };
+      return { 
+        transform: [{ 
+          scale: progress.interpolate({ 
+            inputRange: [0, 1], 
+            outputRange: [1, 1.15],
+            extrapolate: 'clamp'
+          })
+        }] 
+      };
     }
     if (anim.type === 'rain') {
       // 雨のアニメーション
-      const translateY = progress.interpolate({ inputRange: [0, 1], outputRange: [0, 4] });
-      return { transform: [{ translateY }] };
+      return { 
+        transform: [{ 
+          translateY: progress.interpolate({ 
+            inputRange: [0, 1], 
+            outputRange: [0, 4],
+            extrapolate: 'clamp'
+          })
+        }] 
+      };
     }
     if (anim.type === 'snow') {
       // 雪のアニメーション
-      const translateY = progress.interpolate({ inputRange: [0, 1], outputRange: [0, -6] });
-      return { transform: [{ translateY }] };
+      return { 
+        transform: [{ 
+          translateY: progress.interpolate({ 
+            inputRange: [0, 1], 
+            outputRange: [0, -6],
+            extrapolate: 'clamp'
+          })
+        }] 
+      };
     }
     return {};
   })();
@@ -186,28 +221,28 @@ function mapCodeToStyle(code: number | null | undefined, color?: string, isDark?
 
   const map: Record<number, { iconFamily: string; name: string; tint: string; anim: { type: string } }> = {
     0: { iconFamily: 'Ionicons', name: 'sunny', tint: '#f59e0b', anim: { type: 'rotate' } },
-    1: { iconFamily: 'Ionicons', name: 'partly-sunny', tint: '#f59e0b', anim: { type: 'rotate' } },
+    1: { iconFamily: 'Ionicons', name: 'sunny', tint: '#f59e0b', anim: { type: 'rotate' } },
     2: { iconFamily: 'Ionicons', name: 'cloud-outline', tint: '#6b7280', anim: { type: 'float' } },
     3: { iconFamily: 'Ionicons', name: 'cloud-outline', tint: '#6b7280', anim: { type: 'float' } },
     45: { iconFamily: 'MaterialCommunityIcons', name: 'weather-fog', tint: '#9ca3af', anim: { type: 'float' } },
     48: { iconFamily: 'MaterialCommunityIcons', name: 'weather-fog', tint: '#9ca3af', anim: { type: 'float' } },
-    51: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'rain' } },
-    53: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'rain' } },
-    55: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'rain' } },
-    56: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'rain' } },
-    57: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'rain' } },
-    61: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'rain' } },
-    63: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'rain' } },
-    65: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'rain' } },
-    66: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'rain' } },
-    67: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'rain' } },
+    51: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'float' } },
+    53: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'float' } },
+    55: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'float' } },
+    56: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'float' } },
+    57: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'float' } },
+    61: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'float' } },
+    63: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'float' } },
+    65: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'float' } },
+    66: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'float' } },
+    67: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'float' } },
     71: { iconFamily: 'MaterialCommunityIcons', name: 'weather-snowy', tint: '#e5e7eb', anim: { type: 'snow' } },
     73: { iconFamily: 'MaterialCommunityIcons', name: 'weather-snowy', tint: '#e5e7eb', anim: { type: 'snow' } },
     75: { iconFamily: 'MaterialCommunityIcons', name: 'weather-snowy', tint: '#e5e7eb', anim: { type: 'snow' } },
     77: { iconFamily: 'MaterialCommunityIcons', name: 'weather-snowy', tint: '#e5e7eb', anim: { type: 'snow' } },
-    80: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'rain' } },
-    81: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'rain' } },
-    82: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'rain' } },
+    80: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'float' } },
+    81: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'float' } },
+    82: { iconFamily: 'MaterialCommunityIcons', name: 'weather-rainy', tint: '#3b82f6', anim: { type: 'float' } },
     85: { iconFamily: 'MaterialCommunityIcons', name: 'weather-snowy', tint: '#e5e7eb', anim: { type: 'snow' } },
     86: { iconFamily: 'MaterialCommunityIcons', name: 'weather-snowy', tint: '#e5e7eb', anim: { type: 'snow' } },
     95: { iconFamily: 'MaterialCommunityIcons', name: 'weather-lightning', tint: '#fbbf24', anim: { type: 'pulse' } },
