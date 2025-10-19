@@ -29,11 +29,56 @@ export default function WeatherAdvice({ hourlyData, isDark = false }: Props) {
   const generateAdvice = (): AdviceType => {
     const avgTemp = futureHours.reduce((sum, hour) => sum + hour.temperatureC, 0) / futureHours.length;
     const maxPrecip = Math.max(...futureHours.map(hour => hour.precipitationProbability));
-    const hasRain = futureHours.some(hour => hour.precipitationProbability > 30);
-    const hasHeavyRain = futureHours.some(hour => hour.precipitationProbability > 70);
+    const avgPrecip = futureHours.reduce((sum, hour) => sum + hour.precipitationProbability, 0) / futureHours.length;
     
-    // 傘の必要性判定
-    const umbrella = hasRain || maxPrecip > 50;
+    // 時間帯の判定
+    const currentHour = new Date().getHours();
+    const isMorning = currentHour >= 6 && currentHour < 12;
+    const isAfternoon = currentHour >= 12 && currentHour < 18;
+    const isEvening = currentHour >= 18 && currentHour < 22;
+    const isNight = currentHour >= 22 || currentHour < 6;
+    
+    // 外出時間の長さを考慮（今後6時間のデータを使用）
+    const outdoorHours = futureHours.length;
+    
+    // 傘の必要性判定（より実用的な判定）
+    let umbrella = false;
+    let umbrellaReason = '';
+    
+    if (maxPrecip >= 80) {
+      umbrella = true;
+      umbrellaReason = '強い雨が予想されます';
+    } else if (maxPrecip >= 60) {
+      umbrella = true;
+      umbrellaReason = '雨が降る可能性が高いです';
+    } else if (maxPrecip >= 40) {
+      umbrella = true;
+      umbrellaReason = '雨が降る可能性があります';
+    } else if (maxPrecip >= 30) {
+      umbrella = true;
+      umbrellaReason = '雨に遭う可能性があります';
+    } else if (maxPrecip >= 20) {
+      umbrella = true;
+      umbrellaReason = '念のため傘を持参しましょう';
+    } else if (maxPrecip >= 10) {
+      // 降水確率10-20%: 時間帯と外出時間を考慮
+      if (isAfternoon && outdoorHours >= 3) {
+        umbrella = true;
+        umbrellaReason = '午後の外出で雨に遭う可能性があります';
+      } else if (isEvening && outdoorHours >= 2) {
+        umbrella = true;
+        umbrellaReason = '夕方の外出で雨に遭う可能性があります';
+      } else if (outdoorHours >= 4) {
+        umbrella = true;
+        umbrellaReason = '長時間の外出で雨に遭う可能性があります';
+      } else {
+        umbrella = false;
+        umbrellaReason = '雨の心配は少ないです';
+      }
+    } else {
+      umbrella = false;
+      umbrellaReason = '雨の心配はありません';
+    }
     
     // 服装提案
     let clothing = '';
@@ -62,19 +107,7 @@ export default function WeatherAdvice({ hourlyData, isDark = false }: Props) {
       temperature = '暑い';
     }
     
-    // 理由生成
-    let reason = '';
-    if (hasHeavyRain) {
-      reason = '強い雨が予想されるため';
-    } else if (hasRain) {
-      reason = '雨が予想されるため';
-    } else if (maxPrecip > 30) {
-      reason = '降水確率が高いため';
-    } else {
-      reason = '天気が安定しているため';
-    }
-    
-    return { umbrella, clothing, temperature, reason };
+    return { umbrella, clothing, temperature, reason: umbrellaReason };
   };
 
   const advice = generateAdvice();
