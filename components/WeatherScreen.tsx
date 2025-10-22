@@ -6,6 +6,7 @@ import { geocode, fetchCurrent, fetchTodayForecast, fetchDaily, fetchHourly, Hou
 import { weatherCodeToJa } from '../services/weatherCodes';
 import WeatherIcon from './WeatherIcon';
 import WeatherAdvice from './WeatherAdvice';
+import BannerAd from './BannerAd';
 
 // 時間をフォーマットする関数
 function formatTime(timeIso: string): string {
@@ -237,6 +238,9 @@ const WeatherScreen: React.FC<Props> = ({ activeTab = 'current', onChangeTab, lo
       {!loading && !error && hourlyData.length > 0 && (
         <WeatherAdvice hourlyData={hourlyData} isDark={isDark} />
       )}
+
+      {/* バナー広告 */}
+      <BannerAd style={{ marginVertical: 8 }} />
 
       <View
         style={[

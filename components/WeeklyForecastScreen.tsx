@@ -5,6 +5,7 @@ import { createStyles, lightColors, darkColors } from './WeeklyForecastScreen.st
 import { geocode, fetchDaily, Daily } from '../services/weather';
 import { weatherCodeToJa } from '../services/weatherCodes';
 import WeatherIcon from './WeatherIcon';
+import BannerAd from './BannerAd';
 
 type Props = {
   activeTab?: 'current' | 'weekly' | 'settings';
@@ -110,6 +111,9 @@ export default function WeeklyForecastScreen({ activeTab = 'weekly', onChangeTab
           </View>
         ))}
       </ScrollView>
+
+      {/* バナー広告 */}
+      <BannerAd style={{ marginVertical: 8 }} />
 
       {/* Footer */}
       <View style={[styles.footer, { borderTopColor: colors.divider, backgroundColor: colors.footerBg }]}>
