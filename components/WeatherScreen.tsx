@@ -41,9 +41,9 @@ function getWeatherBackgroundColor(weatherCode: number | null, isDark: boolean):
       return '#718096'; // 柔らかい昼間のグレー
     } else if (weatherCode === 3) {
       // 曇り
-      if (isNight) return '#1a202c'; // 柔らかい非常に深いグレー
-      if (isDawn || isDusk) return '#2d3748'; // 柔らかい夕暮れ/夜明けのグレー
-      return '#4a5568'; // 柔らかい昼間のグレー
+      if (isNight) return '#374151'; // より明るい夜のグレー（文字が見やすい）
+      if (isDawn || isDusk) return '#4b5563'; // より明るい夕暮れ/夜明けのグレー
+      return '#6b7280'; // より明るい昼間のグレー
     } else if (weatherCode !== null && ((weatherCode >= 51 && weatherCode <= 67) || (weatherCode >= 80 && weatherCode <= 82))) {
       // 雨
       if (isNight) return '#2c5282'; // 柔らかい深い青
@@ -75,9 +75,9 @@ function getWeatherBackgroundColor(weatherCode: number | null, isDark: boolean):
       return '#cbd5e0'; // 柔らかい昼間のグレー
     } else if (weatherCode === 3) {
       // 曇り
-      if (isNight) return '#2d3748'; // 柔らかい非常に深いグレー
-      if (isDawn || isDusk) return '#4a5568'; // 柔らかい夕暮れ/夜明けのグレー
-      return '#a0aec0'; // 柔らかい昼間のグレー
+      if (isNight) return '#4b5563'; // より明るい夜のグレー（ライトモードでも文字が見やすい）
+      if (isDawn || isDusk) return '#6b7280'; // より明るい夕暮れ/夜明けのグレー
+      return '#9ca3af'; // より明るい昼間のグレー
     } else if (weatherCode !== null && ((weatherCode >= 51 && weatherCode <= 67) || (weatherCode >= 80 && weatherCode <= 82))) {
       // 雨
       if (isNight) return '#2b6cb0'; // 柔らかい深い青

@@ -109,10 +109,10 @@ export default function WeatherAdvice({ hourlyData, isDark = false }: Props) {
 
   const advice = generateAdvice();
   const colors = {
-    background: isDark ? '#1f2937' : '#ffffff',
-    text: isDark ? '#f8fafc' : '#1e293b',
-    textSecondary: isDark ? '#cbd5e1' : '#64748b',
-    border: isDark ? '#374151' : '#e2e8f0',
+    background: isDark ? '#1e293b' : '#f1f5f9',
+    text: isDark ? '#f8fafc' : '#0f172a',
+    textSecondary: isDark ? '#cbd5e1' : '#475569',
+    border: isDark ? '#334155' : '#cbd5e1',
     accent: '#197fe6',
     warning: '#3b82f6',
     success: '#10b981',
@@ -127,7 +127,13 @@ export default function WeatherAdvice({ hourlyData, isDark = false }: Props) {
       
       <View style={styles.content}>
         {/* 傘の提案 */}
-        <View style={styles.adviceItem}>
+        <View style={[styles.adviceItem, { 
+          backgroundColor: advice.umbrella 
+            ? (isDark ? '#2d1b1b' : '#fef2f2') 
+            : (isDark ? '#1b2d1b' : '#f0fdf4'), 
+          borderRadius: 8, 
+          padding: 12 
+        }]}>
           <View style={styles.adviceHeader}>
             <Ionicons 
               name={advice.umbrella ? "umbrella" : "umbrella-outline"} 
@@ -144,7 +150,11 @@ export default function WeatherAdvice({ hourlyData, isDark = false }: Props) {
         </View>
 
         {/* 服装の提案 */}
-        <View style={styles.adviceItem}>
+        <View style={[styles.adviceItem, { 
+          backgroundColor: isDark ? '#1b2d3d' : '#f0f9ff', 
+          borderRadius: 8, 
+          padding: 12 
+        }]}>
           <View style={styles.adviceHeader}>
             <Ionicons name="shirt-outline" size={18} color={colors.accent} />
             <Text style={[styles.adviceLabel, { color: colors.text }]}>
@@ -167,9 +177,17 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 16,
     marginVertical: 8,
-    borderRadius: 12,
+    borderRadius: 16,
     borderWidth: 1,
-    padding: 16,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
   },
   header: {
     flexDirection: 'row',
